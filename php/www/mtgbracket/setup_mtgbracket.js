@@ -89,17 +89,17 @@ function addRowFromRoot(card_name, start_round, start_col, start_row) {
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[1].style.visibility = "hidden";
             	}
             	// If this is a bye, remove the 'x' and image, and instead display the 'bye'.
-            	else if (cards[i] == "(bye)") {
+            	else if (cards[cur_round-1] == "(bye)") {
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[0].style.visibility = "hidden";
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[1].style.visibility = "hidden";
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[3].style.visibility = "visible";
             	}
             	// If there is a percentage, but it's less than 50, the card lost, show the left 'x'.
-            	else if (percentages.length > cur_round-1 && percentages[i] < 50) {
+            	else if (percentages.length > cur_round-1 && percentages[cur_round-1] < 50) {
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[0].childNodes[1].style.visibility = "visible";
             	}
             	// If there is a percentage, and it's greater than 50, the card won, show the right 'x'.
-            	else if (percentages.length > cur_round-1 && percentages[i] > 50) {
+            	else if (percentages.length > cur_round-1 && percentages[cur_round-1] > 50) {
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[1].style.visibility = "visible";
             	}       	
             	

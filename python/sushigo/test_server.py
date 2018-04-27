@@ -113,7 +113,7 @@ def playCard(player, card, extra_args):
 
   # Check to see if we are playing chopsticks.
   # TODO:this doesn't work when we're actually choosing the card, 'chopsticks'
-  if extra_args == "chopsticks"
+  if extra_args == "chopsticks":
   #if card[:10] == "chopsticks":
     cards = card.split(',')
     if len(cards) != 2:
@@ -134,7 +134,8 @@ def playCard(player, card, extra_args):
       return "ERROR:You don't have that card."
     hand.remove(card)
     player_played_cards[player].append(card)
-    players_to_play.remove(player)
+
+  players_to_play.remove(player)
 
   if not players_to_play and not player_hands[player]:
     endRound()
@@ -349,7 +350,7 @@ def generateHand():
     hand.append(deck.pop())
 
   #FOR TESTING -- DELETE THIS
-  hand.append("chopsticks");
+  #hand.append("chopsticks");
   return hand
 
 

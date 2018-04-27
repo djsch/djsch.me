@@ -4,10 +4,6 @@ function getCardPath(card) {
     return "images/" + card + "_card.jpg";
 }
 
-function setChopsticks() {
-    chopsticks.push("chopsticks");
-}
-
 // Takes a SushigoResponse object.
 function displayCards(response) {
 	//console.log("displaying cards");
@@ -25,16 +21,23 @@ function displayCards(response) {
 	let hand_cards = document.getElementById("hand_cards");
     let hand = response.getHand();
     let played = response.getPlayed();
-    console.log("hand is: " + hand);
-    console.log("hand length is: " + hand.length);
-    console.log("played is: " + played);
-    console.log("played length is: " + played.length);
+    //console.log("hand is: " + hand);
+    //console.log("hand length is: " + hand.length);
+    //console.log("played is: " + played);
+    //console.log("played length is: " + played.length);
 	for (let i = 0; i < played.length; i++) {
 		let img = document.createElement("img");
         img.className = "card_image_small";
 		img.src = getCardPath(played[i]);
         if (played[i] == "chopsticks") {
-            img.onclick = function(){setChopsticks();};
+            // Clicking on the chopsticks card will add an element to the
+            // 'chopsticks' array to indicate that future clicks should
+            // add to the array, rather than immediately picking that card.
+            img.onclick = function(){
+                if (chopsticks.length == 0) {
+                    chopsticks.push("chopsticks");
+                }
+            };
         }
 		played_cards.appendChild(img);
 	}
@@ -141,6 +144,7 @@ function playCard(card="") {
 	}
 
     var extra_args = "";
+    var card_played = "";
 
     // Check to see if this is the first or second 'chopsticks' card.
     if (chopsticks.length == 1) {
@@ -152,7 +156,11 @@ function playCard(card="") {
         return;
     }
     else if (chopsticks.length == 2) {
-        extra_args = (chopsticks[1] + "," + card);
+        card_played = (chopsticks[1] + "," + card);
+        extra_args = "chopsticks";
+    }
+    else {
+        card_played = card;
     }
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -171,9 +179,9 @@ function playCard(card="") {
         	}
         }
     };
-    let arg_string = ("test_server?action=playCard&card=" + card + "&player=" + player_name);
+    let arg_string = ("test_server?action=playCard&card=" + card_played + "&player=" + player_name);
     if (extra_args != "") {
-        args_string += ("&extra_args=" + extra_args);
+        arg_string += ("&extra_args=" + extra_args);
     }
     xmlhttp.open("GET", arg_string, true);
     xmlhttp.send();
