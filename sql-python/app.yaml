@@ -1,0 +1,28 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+service: sql-management
+
+handlers:
+- url: /*
+  script: update_website_sql.app
+
+- url: /.*
+  script: update_website_sql.app
+
+- url: /update_website_sql
+  script: update_website_sql.app
+
+libraries:
+- name: MySQLdb
+  version: "1.2.5"
+
+- name: ssl
+  version: latest
+
+env_variables:
+  # Replace USER, PASSWORD, DATABASE, and CONNECTION_NAME with the
+  # values obtained when configuring your Cloud SQL instance.
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/djschwebsite-194723:us-central1:djsch-sql;dbname=mtgbracket
+  MYSQL_USER: root
+  MYSQL_PASSWORD: therootpassword

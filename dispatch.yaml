@@ -1,0 +1,8 @@
+dispatch:
+  # Send all SushiGo traffic to the python backend.
+  - url: "*/sushigo*"
+    service: website-python
+
+  # Send all cron traffic to the sqlmanagement backend.
+  - url: "*/update_website_sql*"
+    service: sql-management

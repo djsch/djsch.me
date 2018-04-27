@@ -1,0 +1,77 @@
+runtime: php55
+api_version: 1
+
+handlers:
+- url: /
+  static_files: www/website.htm
+  upload: www/website.htm
+
+- url: /foo
+  static_files: www/website.htm
+  upload: www/website.htm
+
+- url: /phpinfo.php
+  script: /www/phpinfo.php
+
+- url: /set/play_set.htm
+  static_files: www/set/play_set.htm
+  upload: www/set/play_set.htm
+
+- url: /set/setup.js
+  static_files: www/set/setup.js
+  upload: www/set/setup.js
+
+- url: /set/black_border/(.*)$
+  static_files: www/set/black_border/\1
+  upload: www/set/black_border/.*
+  application_readable: true
+
+- url: /set/red_border/(.*)$
+  static_files: www/set/red_border/\1
+  upload: www/set/red_border/.*
+  application_readable: true
+
+- url: /mtgbracket/mtgbracket_main.htm
+  static_files: www/mtgbracket/mtgbracket_main.htm
+  upload: www/mtgbracket/mtgbracket_main.htm
+
+- url: /mtgbracket/setup_mtgbracket.js
+  static_files: www/mtgbracket/setup_mtgbracket.js
+  upload: www/mtgbracket/setup_mtgbracket.js
+
+- url: /mtgbracket/html_management.js
+  static_files: www/mtgbracket/html_management.js
+  upload: www/mtgbracket/html_management.js
+
+- url: /mtgbracket/images/(.*)$
+  static_files: www/mtgbracket/images/\1
+  upload: www/mtgbracket/images/.*
+  application_readable: true
+
+- url: /mtgbracket/get_card_info.php
+  script: /www/mtgbracket/get_card_info.php
+
+- url: /mtgbracket/get_card_image.php
+  script: /www/mtgbracket/get_card_image.php
+
+- url: /mtgbracket/get_card_name.php
+  script: /www/mtgbracket/get_card_name.php
+
+- url: /mtgbracket/info.htm
+  static_files: www/mtgbracket/info.htm
+  upload: www/mtgbracket/info.htm
+
+- url: /mtgbracket/contact.htm
+  static_files: www/mtgbracket/contact.htm
+  upload: www/mtgbracket/contact.htm
+
+- url: /mtgbracket/changelog.htm
+  static_files: www/mtgbracket/changelog.htm
+  upload: www/mtgbracket/changelog.htm
+
+env_variables:
+  # Replace USER, PASSWORD, DATABASE, and CONNECTION_NAME with the
+  # values obtained when configuring your Cloud SQL instance.
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/djschwebsite-194723:us-central1:djsch-sql;dbname=mtgbracket
+  MYSQL_USER: root
+  MYSQL_PASSWORD: therootpassword

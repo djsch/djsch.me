@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<style>
+#the_cards {
+	background-color: black;
+}
+.parent {
+	position: relative;
+    top: 0;
+    left: 0;
+}
+.card_image {
+	position: relative;
+  	top: 0;
+  	left: 0;
+  	height: 453px;
+  	width: 325px;
+}
+.bracket_image {
+	position: relative;
+  	top: 0;
+  	left: 0;
+  	height: 226px;
+  	width: 163px;
+}
+.x_image {
+	position: absolute;
+	display: inline-block;
+	top: 130px;
+	left: 62px;
+	height: 200px;
+	width: 200px;
+}
+.x_bracket_image {
+	position: absolute;
+	display: inline-block;
+	top: 42px;
+	left: 42px;
+	height: 80px;
+	width: 80px;
+}
+.percent_text {
+	position: absolute;
+	display: inline-block;
+	top: -30px;
+	left: 80px;
+	font-size: 70px;
+	font-family: Georgia, serif;
+	color: red;
+}
+.bye_text{
+	font-size: 70px;
+	margin: 0px;
+	font-family: Georgia, serif;
+	color: black;
+	white-space: nowrap;
+	position: absolute;
+	top: 42px;
+	left: 22px;
+}
+.round_text {
+	font-size: 70px;
+	margin: 0px;
+	font-family: Georgia, serif;
+	color: black;
+	white-space: nowrap;
+}
+.text_shadow {
+    color: red;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
+}
+.toggleable {
+
+}
+</style>
+
+<body style="background-color:white">
+
+<h1>The Magic Bracket</h1>
+<!--
+<div>
+	<input type="button" id="debugButton" value="Debug">
+</div>
+-->
+<div>
+<a href="info.htm">What's this?</a>
+<a href="contact.htm">Contact Me</a>
+<a href="changelog.htm">Changelog</a>
+</div>
+<div id="user_input">
+	<div>
+		<label for="input_textbox">Choose a card: </label>
+		<input type="text" id="input_textbox">
+	</div>
+	<input type="button" id="matchupsButton" value="View Matchups">
+	<input type="button" id="toggleButton" value="Toggle Overlay">
+	<input type="button" id="bracketButton" value="View Bracket">
+</div>
+<div id="error"></div>
+<div id="rounds"></div>
+
+<div id="bracket">
+	<div id="change_bracket_bounds"></div>
+	<span id="bracket_rounds" style="position:relative">
+	</span>
+	<div id="bracket_span" style="position: relative">
+	</div>
+</div>
+<script src="html_management.js"></script>
+<script src="setup_mtgbracket.js"></script>
+</body>
+</html>

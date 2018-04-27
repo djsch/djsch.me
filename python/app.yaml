@@ -1,0 +1,34 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+service: website-python
+
+handlers:
+- url: /sushigo/play_sushigo.htm
+  static_files: sushigo/play_sushigo.htm
+  upload: sushigo/play_sushigo.htm
+
+- url: /sushigo/sushigo.js
+  static_files: sushigo/sushigo.js
+  upload: sushigo/sushigo.js
+
+- url: /sushigo/sushigo_response.js
+  static_files: sushigo/sushigo_response.js
+  upload: sushigo/sushigo_response.js
+
+- url: /sushigo/images/(.*)$
+  static_files: sushigo/images/\1
+  upload: sushigo/images/.*
+  application_readable: true
+
+- url: /sushigo/test_server
+  script: sushigo.test_server.app
+
+- url: /sushigo/foobar.app
+  script: sushigo.foobar.app
+
+- url: /sushigo/testing
+  script: test.app
+
+- url: /sushigo/break
+  script: sushigo.test.app

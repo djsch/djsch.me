@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<style>
+.card_image {
+	height: 385px;
+	width: 265px;
+}
+.card_image_small {
+	height: 193px;
+	width: 133;
+}
+</style>
+<body style="background-color:white">
+
+<h1>Welcome to SushiGo!</h1>
+<div>
+	<p id="error_status_display"></p>
+	<p id="ok_status_display"></p>
+</div>
+<div>
+	<h3 id="your_name"></h3>
+</div>
+<div>
+<label for="playerNameText">Choose player name: </label>
+<input type="text" id="playerNameText">
+<input type="button" id="submitPlayerName" value="Submit Player Name">
+</div>
+
+<div>
+<label for="passwordTextbox">Password requred to remove players: </label>
+<input type="text" id="passwordTextbox">
+<input type="button" id="resetGame" value="Reset Game">
+</div>
+
+<div>
+<input type="button" id="getPlayers" value="Debug">
+</div>
+
+<div>
+<input type="button" id="startGame" value="Start Game">
+</div>
+
+<div>
+<label for="playCardTextbox">Play a card: </label>
+<input type="text" id="playCardTextbox">
+<input type="button" id="playCardButton" value="Play Card"></div>
+
+<div>
+<h2 id="opponent_name_card_title">Opponent's Cards</h2>
+<div id="opponent_cards"></div>
+<h2>Your Played Cards</h2>
+<div id="played_cards"></div>
+<h2>Cards in Hand</h2>
+<div id="hand_cards"></div>
+</div>
+<script src="sushigo_response.js"></script>
+<script src="sushigo.js"></script>
+
+</body>
+</html>
