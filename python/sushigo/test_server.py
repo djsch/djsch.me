@@ -336,8 +336,8 @@ def generateDeck():
     deck.append('wasabi')
   for i in range(10):
     deck.append('pudding')
-  #for i in range(4):
-  #  deck.append('chopsticks')
+  for i in range(4):
+    deck.append('chopsticks')
   random.shuffle(deck)
 
 def generateHand():
@@ -347,6 +347,9 @@ def generateHand():
   #for i in range(5):
   for i in range(10):
     hand.append(deck.pop())
+
+  #FOR TESTING -- DELETE THIS
+  hand.append("chopsticks");
   return hand
 
 
