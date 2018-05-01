@@ -39,9 +39,21 @@ handlers:
   static_files: www/mtgbracket/setup_mtgbracket.js
   upload: www/mtgbracket/setup_mtgbracket.js
 
+- url: /mtgbracket/common_utils.js
+  static_files: www/mtgbracket/common_utils.js
+  upload: www/mtgbracket/common_utils.js
+
 - url: /mtgbracket/html_management.js
   static_files: www/mtgbracket/html_management.js
   upload: www/mtgbracket/html_management.js
+
+- url: /mtgbracket/mtgbracket_create_view.htm
+  static_files: www/mtgbracket/mtgbracket_create_view.htm
+  upload: www/mtgbracket/mtgbracket_create_view.htm
+
+- url: /mtgbracket/create_view.js
+  static_files: www/mtgbracket/create_view.js
+  upload: www/mtgbracket/create_view.js
 
 - url: /mtgbracket/images/(.*)$
   static_files: www/mtgbracket/images/\1
@@ -56,6 +68,9 @@ handlers:
 
 - url: /mtgbracket/get_card_name.php
   script: /www/mtgbracket/get_card_name.php
+
+- url: /mtgbracket/get_bracket_128.php
+  script: /www/mtgbracket/get_bracket_128.php
 
 - url: /mtgbracket/info.htm
   static_files: www/mtgbracket/info.htm

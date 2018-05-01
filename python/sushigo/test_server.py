@@ -8,6 +8,8 @@ import threading
 import random
 import webapp2
 
+import test_import
+
 """
 Generates a debug string representing the current gamestate.
 
@@ -154,11 +156,11 @@ def playCard(player, card, extra_args):
 # hand is a [] of cards
 # opp_hands is a [] of hands
 def countPoints(hand, opp_hands):
-  print "counting points"
-  print "cards is: "
-  print hand
-  print "opp_cards is: "
-  print opp_hands
+  #print "counting points"
+  #print "cards is: "
+  #print hand
+  #print "opp_cards is: "
+  #print opp_hands
   # Count the maki in each opponent's hand
   opp_maki = []
   for opp_hand in opp_hands:
@@ -181,8 +183,8 @@ def countPoints(hand, opp_hands):
   dumpling = hand.count("dumpling")
   for i in range(dumpling):
     points += (i+1)
-  print "now, points is "
-  print points
+  #print "now, points is "
+  #print points
 
   # Count the maki the player has.
   maki = 0
@@ -193,8 +195,8 @@ def countPoints(hand, opp_hands):
   maki_3 = hand.count("maki_3")
   maki += (maki_3 * 3)
 
-  print "opp_maki is: "
-  print opp_maki
+  #print "opp_maki is: "
+  #print opp_maki
   # Handle all the various maki cases
   # If you have the most maki
   if maki > opp_maki[-1]:
@@ -224,8 +226,8 @@ def countPoints(hand, opp_hands):
         opp_maki = opp_maki[:-1]
       points += math.floor(3/num_second_maki)
 
-  print "now, points is "
-  print points
+  #print "now, points is "
+  #print points
 
   wasabi = 0
   # Count wasabi and nigiri
@@ -252,8 +254,8 @@ def countPoints(hand, opp_hands):
       else:
         points += 3
 
-  print "now, points is "
-  print points
+  #print "now, points is "
+  #print points
   # Count puddings
   # TODO: count puddings
   return points
@@ -392,9 +394,13 @@ def handleRequestAndGetResponse(request):
   global players, isStarted, players_to_play, players_not_updated, lock
   global waiting_for_play, waiting_for_update, player_hands, player_played_cards, player_points
 
+  #blah = test_import.getBlah()
+  #if blah != 5:
+  #  return "ERROR: importing didn't work"
+
   action = request.get("action")
   player = request.get("player")
-  print "player is: {}".format(player)
+  #print "player is: {}".format(player)
 
   if action == 'debug':
     return getDebugState()
