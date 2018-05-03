@@ -51,6 +51,14 @@ handlers:
   static_files: www/mtgbracket/mtgbracket_create_view.htm
   upload: www/mtgbracket/mtgbracket_create_view.htm
 
+- url: /mtgbracket/mtg_bracket_winners.js
+  static_files: www/mtgbracket/mtg_bracket_winners.js
+  upload: www/mtgbracket/mtg_bracket_winners.js
+
+- url: /mtgbracket/compression_utils.js
+  static_files: www/mtgbracket/compression_utils.js
+  upload: www/mtgbracket/compression_utils.js
+
 - url: /mtgbracket/create_view.js
   static_files: www/mtgbracket/create_view.js
   upload: www/mtgbracket/create_view.js

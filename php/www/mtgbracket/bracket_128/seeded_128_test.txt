@@ -55,7 +55,7 @@ Kataki, War's Wage
 Slaughter Pact
 Demonic Consultation
 Sinew Sliver
-NarcomoebaAll Hallow's Eve
+All Hallow's Eve
 Wall of Blossoms
 Sorin Markov
 Pentad Prism
@@ -125,3 +125,4 @@ Diabolic Edict
 Hypnotic Specter
 Invisible Stalker
 Avatar of the Resolute
+Narcomoeba

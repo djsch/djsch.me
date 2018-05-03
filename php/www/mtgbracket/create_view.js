@@ -1,80 +1,29 @@
 "use strict"
 
-class mtgBracketWinners {
-    constructor(cards) {
-        if (cards.length != 16) {
-            throw "Tried to construct an mtgBracketWinners object with the wrong number of cards: " + cards.length;
-        }
-        this.rounds = new Array();
-        this.rounds.push(cards);
-
-        let round2 = new Array()
-        for (let i = 0; i < 8; i++) {
-            round2.push("");
-        }
-        this.rounds.push(round2);
-
-        let round3 = new Array();
-        for (let i = 0; i < 4; i++) {
-            round3.push("");
-        }
-        this.rounds.push(round3);
-
-        let round4 = new Array();
-        for (let i = 0; i < 2; i++) {
-            round4.push("");
-        }
-        this.rounds.push(round4);
-
-        let round5 = new Array();
-        round5.push("");
-        this.rounds.push(round5);
-    }
-
-    // 'card' is the card that wins
-    // 'round' is the round that is won (0-indexed)
-    //   (therefore we alter round+1)
-    setRoundWinner(card, round) {
-        console.log("setRoundWinner called for: " + card);
-        let index = this.rounds[round].indexOf(card);
-        let row = Math.floor(index/2);
-        // Set the winning card to the next round.
-        if (round < 4) {
-            this.rounds[round+1][row] = card;
-            doThing(card, round+1, Math.floor(row/2), row%2);
-        }
-        // If there are further rounds that need to be changed, change them.
-        if (round < 3) {
-            for (let i = round+2; i < 4; i++) {
-                row = Math.floor(row/2);
-                if (this.rounds[i][row] != card && this.rounds[i][row] != "") {
-                    this.rounds[i][row] = "";
-                    doThing("", i, Math.floor(row/2), row%2);
-                }
-            }
-        }
-        //round_next[Math.floor(index/2)] = card;
-        //this.round2[Math.floor(pos/2)] = card;
-        //doThing(card, 1, Math.floor(pos/2), pos%2);
-        //refresh display
-    }
-
-    printDebugString() {
-        for (let i = 0; i < this.rounds.length; i++) {
-            console.log(this.rounds[i]);
-        }
-    }
-}
-
 function debug() {
-    winners.printDebugString();
+    for (let i = 0; i < 8; i++) {
+        let foo = bracket_winners.getBranchWinners(i)
+        if (foo) {
+            foo.printDebugString();
+        }
+    }
 }
 
-function doThing(card_name, col, row, pos) {
+function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
     console.log("card_name is: " + card_name);
     console.log("col is: " + col);
     console.log("row is: " + row);
     console.log("pos is: " + pos);
+
+    // Check what the last column is -- if it's the top 8, there are 3 columns. The divisions have 4.
+    var last_col;
+    if (isTop8()) {
+        last_col = 3;
+    }
+    else {
+        last_col = 4;
+    }
+
     let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
 
     // horizontal, vertical, left, image (not x)
@@ -82,32 +31,95 @@ function doThing(card_name, col, row, pos) {
         rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[0].src="";
         return;
     }
-    else {
+    else if (col < last_col) {
         getAndSetCardImage(card_name, rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[0]);
     }
 
-    // TODO: Make this generic
-    if (col == 4) {
-        return;
+    // If we've finished filling out this bracket, un-hide the continue dialogue.
+    if (bracket_winners.getBranchWinners(branch_num).isComplete()) {
+        let cont = document.getElementById("continue");
+        cont.style.display = "block";
+        let winning_card = document.getElementById("winning_card");
+        getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
+        let button = document.getElementById("continue_button");
+        button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ")");
+
+        // Scroll the screen to the top, only the first time this happens.
+        if (!bracket_winners.getBranchWinners(branch_num).hasScreenScrolled()) {
+            scroll(0,0);
+            bracket_winners.getBranchWinners(branch_num).setScreenScrolled();
+        }
+
     }
 
-    //if ((row % 2) == 0) {
-        rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[0].onclick = function(){winners.setRoundWinner(card_name, col);};
-        //rounds_and_bracket[col].childNodes[row].childNodes[pos].childNodes[0].onclick = function(){doThing(card_name, col+1, Math.floor(row/2), 0);};       
-    //}
-    //else {
-        //rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[0].onclick = function(){doThing(card_name, col+1, Math.floor(row/2), 1);};
-        //rounds_and_bracket[col].childNodes[row].childNodes[pos].childNodes[0].onclick = function(){doThing(card_name, col+1, Math.floor(row/2), 1);}; 
-    //}
+    // If this is the last column, and there's no point in setting an onclick.
+    if (col < last_col) {
+        rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(card_name, col);};
+    }
 }
 
-// branches 1-8 are the individual branches
-// branch 9 is the top 8
-function showBracket(branch) {
-	clearPage();
-	let card_name;
+function isTop8() {
+    let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
+    if (rounds_and_bracket.length == 5) {
+        return true;
+    }
+    else if (rounds_and_bracket.length == 7) {
+        return false;
+    }
+    else {
+        throw "Couldn't determine if we're displaying the top8 or not.";
+    }
+}
 
-    fillBracketDom(4, 11); // show 4 rounds, last round is 11
+function showTop8() {
+    fillBracketDom(3, 14); // show 3 rounds, last round is 14
+    //bracket_winners.update();
+    let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
+    let cards = new Array();
+    for (let i = 0; i < 8; i++) {
+        cards.push(bracket_winners.getBranchWinners(i).getWinner());
+    }
+    let branch_winners = new mtgBranchWinners(cards, 8);
+    bracket_winners.setBranchWinners(branch_winners, 8);
+
+    for (let i = 0; i < 4; i++) {
+        // horizontal, vertical, left, image (not x)
+        getAndSetCardImage(cards[i*2], rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0]);
+        getAndSetCardImage(cards[(i*2)+1], rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0])
+
+        //if ((i % 2) == 0) {
+            //rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){doThing(data[i*2], 1, Math.floor(i/2), 0);};
+            //rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){doThing(data[(i*2)+1], 1, Math.floor(i/2), 0);};
+            rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(8).setRoundWinner(cards[i*2], 0);};
+            rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(8).setRoundWinner(cards[(i*2)+1], 0);};
+        //}
+        //else {
+        //    rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){doThing(data[i*2], 1, Math.floor(i/2), 1);};
+        //    rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){doThing(data[(i*2)+1], 1, Math.floor(i/2), 1);};
+        //}
+
+    }
+}
+
+// branches 0-7 are the individual branches
+// branch 8 is the top 8
+function showBranch(branch_num) {
+	clearPage();
+	//let card_name;
+
+    // Hide 'continue' elements.
+    let cont = document.getElementById("continue");
+    cont.style.display = "none";
+    let winning_card = document.getElementById("winning_card");
+    winning_card.src = "";
+
+    if (branch_num == 8) {
+        showTop8();
+        return;
+    }
+    else {
+        fillBracketDom(4, 11); // show 4 rounds, last round is 11
+    }
 
     // Get a list of all possible cards (ie, cards prefixed with 'card_name'). If there's
     // only 1 such card, display it in the requested style. Otherwise, display an appropriate
@@ -120,7 +132,8 @@ function showBracket(branch) {
             let data = JSON.parse(this.responseText);
             console.log(data);
 
-            winners = new mtgBracketWinners(data);
+            let branch_winners = new mtgBranchWinners(data, branch_num);
+            bracket_winners.setBranchWinners(branch_winners, branch_num);
 
             let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
 
@@ -136,8 +149,8 @@ function showBracket(branch) {
                 //if ((i % 2) == 0) {
                     //rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){doThing(data[i*2], 1, Math.floor(i/2), 0);};
                     //rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){doThing(data[(i*2)+1], 1, Math.floor(i/2), 0);};
-                    rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){winners.setRoundWinner(data[i*2], 0);};
-                    rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){winners.setRoundWinner(data[(i*2)+1], 0);};
+                    rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(data[i*2], 0);};
+                    rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(data[(i*2)+1], 0);};
                 //}
                 //else {
                 //    rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){doThing(data[i*2], 1, Math.floor(i/2), 1);};
@@ -149,12 +162,12 @@ function showBracket(branch) {
             
         }
     };
-    xmlhttp.open("GET","get_bracket_128.php?q="+branch, true);
+    xmlhttp.open("GET","get_bracket_128.php?q="+branch_num, true);
     xmlhttp.send();
 }
 
 let button = document.getElementById("start");
-button.setAttribute("onclick", "showBracket(0)");
+button.setAttribute("onclick", "showBranch(0)");
 
 button = document.getElementById("debug");
 button.setAttribute("onclick", "debug()");
@@ -166,5 +179,5 @@ button.setAttribute("onclick", "debug()");
 //button.setAttribute("onclick", "getCardNameAndFill(\"bracket\", \"\")");
 
 let toggleableElements = [];
-var winners;
-//let winners = new mtgBracketWinners();
+//var winners;
+let bracket_winners = new mtgBracketWinners();

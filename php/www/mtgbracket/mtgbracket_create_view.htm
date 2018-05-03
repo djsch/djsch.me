@@ -73,6 +73,9 @@
     -1px 1px 0 #000,
     1px 1px 0 #000;  
 }
+.start_hidden{
+	display: none;
+}
 .toggleable {
 
 }
@@ -99,11 +102,16 @@
 	<input type="button" id="bracketButton" value="View Bracket">
 </div>
 -->
-<input type="button" id="start" value="Get Batch 1">
+<input type="button" id="start" value="Start">
 <input type="button" id="debug" value="Debug">
 <div id="error"></div>
 <div id="rounds"></div>
 
+<div id="continue" class="start_hidden">
+	<h1>Winner of this Division</h1>
+	<img class="card_image" id="winning_card"></img>
+	<input type="button" id="continue_button" value="Continue to the next division">
+</div>
 <div id="bracket">
 	<div id="change_bracket_bounds"></div>
 	<span id="bracket_rounds" style="position:relative">
@@ -112,6 +120,8 @@
 	</div>
 </div>
 <script src="html_management.js"></script>
+<script src="mtg_bracket_winners.js"></script>
+<script src="compression_utils.js"></script>
 <script src="common_utils.js"></script>
 <script src="create_view.js"></script>
 </body>
