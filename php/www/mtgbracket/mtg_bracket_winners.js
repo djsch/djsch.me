@@ -3,7 +3,14 @@ class mtgBracketWinners {
         // Store the mtgBranchWinners that feed the top8.
         this.branches = new Array();
         for (let i = 0; i < 9; i++) {
-            this.branches.push(null);
+            let foo_array = new Array();
+            let num_elems = 16;
+            if (i == 8) {num_elems = 8;}
+            for (let j = 0; j < num_elems; j++) {
+                foo_array.push("");
+            }
+            let foo_branch = new mtgBranchWinners(foo_array, i);
+            this.branches.push(foo_branch);
         }
 /*
         let cards = new Array();
@@ -34,14 +41,23 @@ class mtgBracketWinners {
         */
     }
 
-    update() {
-        /*
-        let cards = new Array();
-        for (let i = 0; i < 8; i++) {
-            cards.push(this.branches[i].getWinner());
+    // cards is an array of cards to update the array with
+    update(cards) {
+        if (cards.length != 263) {
+            throw "wrong number of cards in update(): got " + cards.length;
         }
-        this.rounds[0] = cards;
-        */
+        for (let i = 0; i < 9; i++) {
+            let start = 31 * i;
+            let end = start + 31;
+            if (i == 8) {
+                end -= 16;
+            }
+            //console.log("before update");
+            //this.branches[i].printDebugString();
+            this.branches[i].update(cards.slice(start, end));
+            //console.log("after update");
+            //this.branches[i].printDebugString();
+        }
     }
 /*
     setRoundWinner(card, round) {
@@ -106,8 +122,13 @@ class mtgBracketWinners {
     */
 
     printDebugString() {
-        for (let i = 0; i < this.rounds.length; i++) {
-            console.log(this.rounds[i]);
+        for (let i = 0; i < this.branches.length; i++) {
+            if (this.branches[i] != null) {
+                this.branches[i].printDebugString();
+            }
+            else {
+                console.log("branch " + i + " hasn't been created yet.");
+            }
         }
     }
 
@@ -214,6 +235,29 @@ class mtgBranchWinners {
         //this.round2[Math.floor(pos/2)] = card;
         //doThing(card, 1, Math.floor(pos/2), pos%2);
         //refresh display
+    }
+
+    update(cards) {
+        //console.log("calling update in branch");
+        //console.log(cards);
+        if ((this.rounds.length == 4) && (cards.length != 15)) {
+            throw "wrong number of cards";
+        }
+        else if ((this.rounds.length == 5) && (cards.length != 31)) {
+            throw "got the wrong number of cards";
+        }
+
+        let i = 0;
+        for (let j = 0; j < this.rounds.length; j++) {
+            for (let k = 0; k < this.rounds[j].length; k++) {
+                this.rounds[j][k] = cards[i];
+                i++;
+            }
+        }
+        //console.log("printing rounds");
+        for (let r = 0; r < this.rounds.length; r++) {
+            //console.log(this.rounds[r]);
+        }
     }
 
     isComplete() {

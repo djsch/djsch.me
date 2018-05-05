@@ -42,7 +42,7 @@ function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
         let winning_card = document.getElementById("winning_card");
         getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
         let button = document.getElementById("continue_button");
-        button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ")");
+        button.setAttribute("onclick", "createBranch(" + (branch_num+1) + ")");
 
         // Scroll the screen to the top, only the first time this happens.
         if (!bracket_winners.getBranchWinners(branch_num).hasScreenScrolled()) {
@@ -101,9 +101,42 @@ function showTop8() {
     }
 }
 
+function showBranch(branch_num) {
+    if (branch_num == 8) {
+        fillBracketDom(3, 14); // show 4 rounds, last round is 11
+    }
+    else {
+        fillBracketDom(4, 11); // show 4 rounds, last round is 11
+    }
+
+    let branch_winners = bracket_winners.getBranchWinners(branch_num);
+    let cards = branch_winners.getFullBranch();
+    console.log("cards are: ");
+    console.log(cards);
+
+    let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
+    let num_cols = rounds_and_bracket.length;
+    console.log("doing columns: " + num_cols);
+    let counter = 0;
+    for (let i = 0; i < num_cols; (i=(i+2))) {
+        let num_rows = rounds_and_bracket[i].childNodes.length;
+        console.log("doing rows: " + num_rows);
+        for (let j = 0; j < num_rows; j++) {
+            console.log("adding card " + cards[counter]);
+            if (cards[counter] != "") {
+                getAndSetCardImage(cards[counter], rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0]);
+            }
+            if (cards[counter+1] != "") {
+                getAndSetCardImage(cards[(counter+1)], rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0])
+            }
+            counter += 2;
+        }
+    }
+}
+
 // branches 0-7 are the individual branches
 // branch 8 is the top 8
-function showBranch(branch_num) {
+function createBranch(branch_num) {
 	clearPage();
 	//let card_name;
 
@@ -121,9 +154,6 @@ function showBranch(branch_num) {
         fillBracketDom(4, 11); // show 4 rounds, last round is 11
     }
 
-    // Get a list of all possible cards (ie, cards prefixed with 'card_name'). If there's
-    // only 1 such card, display it in the requested style. Otherwise, display an appropriate
-    // error or disambiguation message with clickable options.
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
 
@@ -166,11 +196,32 @@ function showBranch(branch_num) {
     xmlhttp.send();
 }
 
+function fooBracket() {
+    let saved_bracket = document.getElementById("saved_bracket");
+    
+    console.log("before update");
+    bracket_winners.printDebugString();
+    fillMtgBracketWinners(saved_bracket.value, bracket_winners);
+    console.log("after update");
+    bracket_winners.printDebugString();
+
+
+    //debug();
+
+    showBranch(0);
+}
+
 let button = document.getElementById("start");
-button.setAttribute("onclick", "showBranch(0)");
+button.setAttribute("onclick", "createBranch(0)");
 
 button = document.getElementById("debug");
 button.setAttribute("onclick", "debug()");
+
+button = document.getElementById("get_compression");
+button.setAttribute("onclick", "createAndDisplayCompression(bracket_winners)");
+
+button = document.getElementById("undo_compression");
+button.setAttribute("onclick", "fooBracket()");
 
 //button = document.getElementById("toggleButton");
 //button.onclick = toggleOverlay;
