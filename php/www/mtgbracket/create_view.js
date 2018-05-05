@@ -199,16 +199,16 @@ function createBranch(branch_num) {
 function fooBracket() {
     let saved_bracket = document.getElementById("saved_bracket");
     
-    console.log("before update");
-    bracket_winners.printDebugString();
+    //console.log("before update");
+    //bracket_winners.printDebugString();
     fillMtgBracketWinners(saved_bracket.value, bracket_winners);
-    console.log("after update");
-    bracket_winners.printDebugString();
+    //console.log("after update");
+    //bracket_winners.printDebugString();
 
 
     //debug();
 
-    showBranch(0);
+    //showBranch(0);
 }
 
 let button = document.getElementById("start");
