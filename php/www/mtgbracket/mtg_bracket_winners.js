@@ -12,36 +12,22 @@ class mtgBracketWinners {
             let foo_branch = new mtgBranchWinners(foo_array, i);
             this.branches.push(foo_branch);
         }
-/*
-        let cards = new Array();
-        //for (let i = 0; i < 8; i++) {
-        //    cards.push(this.branches[i].getWinner());
-        //}
+    }
 
-        this.rounds = new Array();
-        this.rounds.push(cards);
-
-        let round2 = new Array()
-        for (let i = 0; i < 4; i++) {
-            round2.push("");
+    // initializes the first col
+    initialize(cards) {
+        if (cards.length != 128) {
+            throw "tried to initialize with wrong number of cards: got " + cards.length;
         }
-        this.rounds.push(round2);
-
-        let round3 = new Array();
-        for (let i = 0; i < 2; i++) {
-            round3.push("");
+        for (let i = 0; i < 8; i++) {
+            let start = 16 * i;
+            let end = start + 16;
+            this.branches[i].initialize(cards.slice(start, end));
         }
-        this.rounds.push(round3);
-
-        let round4 = new Array();
-        round4.push("");
-        this.rounds.push(round4);
-
-        this.screen_scrolled = false;
-        */
     }
 
     // cards is an array of cards to update the array with
+    // updates with the entire branch, ie a compressed string, but converted
     update(cards) {
         if (cards.length != 263) {
             throw "wrong number of cards in update(): got " + cards.length;
@@ -59,67 +45,14 @@ class mtgBracketWinners {
             //this.branches[i].printDebugString();
         }
     }
-/*
-    setRoundWinner(card, round) {
-        var last_col = 3;
 
-        console.log("setRoundWinner called for: " + card);
-        let index = this.rounds[round].indexOf(card);
-        let row = Math.floor(index/2);
-        // Get the name of the opposing card that we might need to remove from
-        // future rounds.
-        var opp_card = "";
-        if (index%2 == 0) {
-            opp_card = this.rounds[round][index+1];
+    updateTop8(){
+        let winners = new Array();
+        for (let i = 0; i < 8; i++) {
+            winners.push(this.branches[i].getWinner());
         }
-        else {
-            opp_card = this.rounds[round][index-1];
-        }
-        // Set the winning card to the next round.
-        if (round < last_col) {
-            this.rounds[round+1][row] = card;
-            updateImageAndSetOnclick(card, 8, round+1, Math.floor(row/2), row%2);
-        }
-        // If there are further rounds that need to be changed, change them.
-        if (round < (last_col - 1)) {
-            for (let i = round+2; i < 4; i++) {
-                row = Math.floor(row/2);
-                //if (this.rounds[i][row] != card && this.rounds[i][row] != "") {
-                if (this.rounds[i][row] == opp_card) {
-                    this.rounds[i][row] = "";
-                    updateImageAndSetOnclick("", 8, i, Math.floor(row/2), row%2);
-                }
-            }
-        }
+        this.branches[8].refresh(winners);
     }
-
-    isComplete() {
-        for (let i = 0; i < this.rounds.length; i++) {
-            for (let j = 0; j < this.rounds[i].length; j++) {
-                if (this.rounds[i][j] == "") {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    hasScreenScrolled() {
-        return this.screen_scrolled;
-    }
-
-    setScreenScrolled() {
-        this.screen_scrolled = true;
-    }
-
-    getWinner() {
-        return this.rounds[3][0];
-    }
-
-    getBranchNum() {
-        return 8;
-    }
-    */
 
     printDebugString() {
         for (let i = 0; i < this.branches.length; i++) {
@@ -203,9 +136,13 @@ class mtgBranchWinners {
             last_col = 4;
         }
 
-        console.log("setRoundWinner called for: " + card);
+        //console.log("setRoundWinner called for: " + card);
+        //console.log("with round: " + round);
         let index = this.rounds[round].indexOf(card);
         let row = Math.floor(index/2);
+        //console.log("index is: " + index);
+        //console.log("row is: " + row);
+        //console.log(this.rounds[round]);
         // Get the name of the opposing card that we might need to remove from
         // future rounds.
         var opp_card = "";
@@ -237,6 +174,38 @@ class mtgBranchWinners {
         //refresh display
     }
 
+    // like initialize, but doesn't overwrite. used for updating the top8
+    refresh(cards) {
+        if (cards.length != this.rounds[0].length) {
+            console.log("cards length is: " + cards.length);
+            console.log("this.rounds[0].length is: " + this.rounds[0].length);
+            throw "unexpected cards length: " + cards;
+        }
+        for (let i = 0; i < this.rounds[0].length; i++) {
+            if (cards[i] != "") {
+                this.rounds[0][i] = cards[i];
+            }
+        }
+    }
+
+    // just initializes; ie the first column
+    initialize(cards) {
+        if ((this.rounds.length == 4) && (cards.length != 8)) {
+            throw "wrong number of cards";
+        }
+        else if ((this.rounds.length == 5) && (cards.length != 16)) {
+            throw "got the wrong number of cards";
+        }
+
+        // TODO: verify that the slice is necessary
+        this.rounds[0] = cards.slice();
+        //let i = 0;
+        //for (let j = 0; j < this.rounds[0].length; j++) {
+        //    this.rounds[0][j] = cards[i];
+        //}
+    }
+
+    // updates the whole branch, ie from an uncompressed compression string
     update(cards) {
         //console.log("calling update in branch");
         //console.log(cards);
@@ -259,6 +228,8 @@ class mtgBranchWinners {
             //console.log(this.rounds[r]);
         }
     }
+
+
 
     isComplete() {
         for (let i = 0; i < this.rounds.length; i++) {

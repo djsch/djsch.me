@@ -153,7 +153,7 @@ function fillMtgBracketWinners(comp, bracket_winners) {
 			// 'compessed' now has the string to display
 			//console.log("bbb");
 		    //bracket_winners.printDebugString();
-		    showBranch(0);
+		    showBranch(0, false);
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
