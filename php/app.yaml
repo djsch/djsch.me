@@ -21,6 +21,10 @@ handlers:
   static_files: www/set/setup.js
   upload: www/set/setup.js
 
+- url: /set/set_card.js
+  static_files: www/set/set_card.js
+  upload: www/set/set_card.js
+
 - url: /set/black_border/(.*)$
   static_files: www/set/black_border/\1
   upload: www/set/black_border/.*

@@ -168,10 +168,6 @@ class mtgBranchWinners {
                 }
             }
         }
-        //round_next[Math.floor(index/2)] = card;
-        //this.round2[Math.floor(pos/2)] = card;
-        //doThing(card, 1, Math.floor(pos/2), pos%2);
-        //refresh display
     }
 
     // like initialize, but doesn't overwrite. used for updating the top8
