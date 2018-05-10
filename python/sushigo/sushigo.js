@@ -59,6 +59,17 @@ function displayCards(response) {
             opponent_cards.appendChild(img);
         }
     }
+
+    // Display your points.
+    let points = response.getPoints();
+    document.getElementById("your_points").innerHTML = ("Points: " + points);
+    // Display the opponent's points.
+    // TODO: make this work for more than one opponent.
+    for (let i = 0; i < num_opp; i++) {
+        let opp_points = response.getOpponentPoints(i);
+        let ele  = document.getElementById("opponent_points");
+        ele.innerHTML = ("Points: " + opp_points);
+    }
 }
 
 // response is a SushigoResponse object.
@@ -96,7 +107,10 @@ function displayResponse(response) {
 
 function resetGame() {
 	var xmlhttp = new XMLHttpRequest();
-	let pwd = document.getElementById("passwordTextbox").value;
+
+	// TODO: re-enable password checking.
+	//let pwd = document.getElementById("passwordTextbox").value;
+	let pwd = "";
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -105,7 +119,7 @@ function resetGame() {
         }
     };
 
-    xmlhttp.open("GET","test_server?action=resetGame&password=" + pwd, true);
+    xmlhttp.open("GET","sushigo_server?action=resetGame&password=" + pwd, true);
     xmlhttp.send();
 }
 
@@ -134,15 +148,11 @@ function update(tries) {
         }
     };
 
-    xmlhttp.open("GET","test_server?action=update&player=" + player_name, true);
+    xmlhttp.open("GET","sushigo_server?action=update&player=" + player_name, true);
     xmlhttp.send();
 }
 
-function playCard(card="") {
-	if (card == "") {
-		card = document.getElementById("playCardTextbox").value;
-	}
-
+function playCard(card) {
     var extra_args = "";
     var card_played = "";
 
@@ -179,7 +189,7 @@ function playCard(card="") {
         	}
         }
     };
-    let arg_string = ("test_server?action=playCard&card=" + card_played + "&player=" + player_name);
+    let arg_string = ("sushigo_server?action=playCard&card=" + card_played + "&player=" + player_name);
     if (extra_args != "") {
         arg_string += ("&extra_args=" + extra_args);
     }
@@ -198,7 +208,7 @@ function startGame() {
         }
     };
 
-    xmlhttp.open("GET","test_server?action=startGame&player=" + player_name, true);
+    xmlhttp.open("GET","sushigo_server?action=startGame&player=" + player_name, true);
     xmlhttp.send();
 }
 
@@ -221,7 +231,7 @@ function submitPlayerName() {
         }
     };
 
-    xmlhttp.open("GET","test_server?action=addPlayer&player=" + name, true);
+    xmlhttp.open("GET","sushigo_server?action=addPlayer&player=" + name, true);
     xmlhttp.send();
 }
 
@@ -235,7 +245,7 @@ function getPlayers() {
             displayResponse(response);
         }
     };
-    xmlhttp.open("GET","test_server?action=debug",true);
+    xmlhttp.open("GET","sushigo_server?action=debug",true);
     xmlhttp.send();
 }
 
@@ -250,9 +260,6 @@ button.onclick = submitPlayerName;
 
 button = document.getElementById("startGame");
 button.onclick = startGame;
-
-button = document.getElementById("playCardButton");
-button.onclick = playCard;
 
 let player_name = "";
 let chopsticks = new Array();

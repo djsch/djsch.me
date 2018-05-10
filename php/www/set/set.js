@@ -161,16 +161,16 @@ function printDebugString() {
 
 // Sets the given card_img HTML element visible.
 function setCardVisible(card_img) {
-	card.style.visibilty = "visible";
-	card.style.width = "200px";
-	card.style.height = "150px";
+	card_img.style.visibilty = "visible";
+	card_img.style.width = "200px";
+	card_img.style.height = "150px";
 }
 
 // Sets the given card_img HTML element hidden.
 function setCardHidden(card_img) {
-	card.style.visibilty = "hidden";
-	card.style.width = "0px";
-	card.style.height = "0px";
+	card_img.style.visibilty = "hidden";
+	card_img.style.width = "0px";
+	card_img.style.height = "0px";
 }
 
 // Adds a row of cards to the current board.

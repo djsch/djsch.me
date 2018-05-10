@@ -8,8 +8,6 @@ import threading
 import random
 import webapp2
 
-import test_import
-
 """
 Generates a debug string representing the current gamestate.
 
@@ -72,11 +70,16 @@ def getPlayerState(player):
     if player_played_cards[player]:
       ret += ','
       ret += ','.join(player_played_cards[player])
-  # Get the cards from all the other players.
+  # Get the cards and points from all the other players.
   for p in players:
     if p != player and p in player_played_cards:
       ret += ':'
       ret += p
+      ret += ','
+      if p in player_points:
+        ret += str(player_points[p])
+      else:
+        ret += '0'
       if player_played_cards[p]:
         ret += ','
         ret += ','.join(player_played_cards[p])
@@ -265,7 +268,8 @@ def endRound():
   global waiting_for_play, waiting_for_update, player_hands, player_played_cards, player_points
   for player in players:
     opp_hands = []
-    # Generate a list of all opponents' hands
+    # Generate a list of all opponents' played cards, so that we can correctly counts points
+    # from things like maki rolls.
     for p in players:
       if p != player:
         opp_hands.append(player_played_cards[p])
@@ -278,6 +282,7 @@ def endRound():
 
   if cur_round < 4:
     for player in players:
+      player_played_cards[player] = []
       player_hands[player] = generateHand()
 
   waiting_for_play = False
@@ -393,10 +398,6 @@ def resetGame():
 def handleRequestAndGetResponse(request):
   global players, isStarted, players_to_play, players_not_updated, lock
   global waiting_for_play, waiting_for_update, player_hands, player_played_cards, player_points
-
-  #blah = test_import.getBlah()
-  #if blah != 5:
-  #  return "ERROR: importing didn't work"
 
   action = request.get("action")
   player = request.get("player")

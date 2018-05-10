@@ -4,9 +4,9 @@ threadsafe: true
 service: website-python
 
 handlers:
-- url: /sushigo/play_sushigo.htm
-  static_files: sushigo/play_sushigo.htm
-  upload: sushigo/play_sushigo.htm
+- url: /sushigo/sushigo_main_page.htm
+  static_files: sushigo/sushigo_main_page.htm
+  upload: sushigo/sushigo_main_page.htm
 
 - url: /sushigo/sushigo.js
   static_files: sushigo/sushigo.js
@@ -21,14 +21,5 @@ handlers:
   upload: sushigo/images/.*
   application_readable: true
 
-- url: /sushigo/test_server
-  script: sushigo.test_server.app
-
-- url: /sushigo/foobar.app
-  script: sushigo.foobar.app
-
-- url: /sushigo/testing
-  script: test.app
-
-- url: /sushigo/break
-  script: sushigo.test.app
+- url: /sushigo/sushigo_server
+  script: sushigo.sushigo_server.app

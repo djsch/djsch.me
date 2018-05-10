@@ -7,7 +7,7 @@ class SushigoResponse {
 	// if DEBUG
 	//   DEBUG:string
 	// if OK
-	//   OK:POINTS:HAND:MY_CARDS:OPP0_CARDS:OPP1_CARDS:etc
+	//   OK:POINTS:HAND:MY_CARDS:OPP_NAME,OPP_POINTS,OPP_CARD_1,OPP_CARD_2,...:<next opp>:etc
 	// if WAIT
 	//   WAIT
 	constructor(responseString) {
@@ -58,10 +58,33 @@ class SushigoResponse {
 		this.checkValidStatus();
 		let split = this.text.split(":");
 		if (split.length >= 2) {
-			return parseInt(split[1]);
+			if (split[1] == "") {
+				return 0;
+			}
+			else {
+				return parseInt(split[1]);
+			}
 		}
 		else {
 			return 0;
+		}
+	}
+
+	getOpponentPoints(opp) {
+		this.checkValidStatus();
+		let split = this.text.split(":");
+		if (split.length >= (5+opp)) {
+			let opp_played = split[(4+opp)];
+			if (opp_played == "") {
+				return [];
+			}
+			opp_played = opp_played.split(",");
+			//return opp_played;
+			// slice to get just the points
+			return parseInt(opp_played.slice(1, 2));
+		}
+		else {
+			return "";
 		}
 	}
 
@@ -115,8 +138,8 @@ class SushigoResponse {
 			}
 			opp_played = opp_played.split(",");
 			//return opp_played;
-			// slice to remove player name
-			return opp_played.slice(1);
+			// slice to remove player name and points
+			return opp_played.slice(2);
 		}
 		else {
 			return "";

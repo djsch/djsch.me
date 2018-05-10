@@ -13,13 +13,13 @@ handlers:
 - url: /phpinfo.php
   script: /www/phpinfo.php
 
-- url: /set/play_set.htm
-  static_files: www/set/play_set.htm
-  upload: www/set/play_set.htm
+- url: /set/set_main_page.htm
+  static_files: www/set/set_main_page.htm
+  upload: www/set/set_main_page.htm
 
-- url: /set/setup.js
-  static_files: www/set/setup.js
-  upload: www/set/setup.js
+- url: /set/set.js
+  static_files: www/set/set.js
+  upload: www/set/set.js
 
 - url: /set/set_card.js
   static_files: www/set/set_card.js
