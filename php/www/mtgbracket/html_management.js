@@ -203,8 +203,6 @@ function fillBracketDom(rounds, last_round) {
 		bracket_div.style.position = "absolute";
 		bracket_div.style.left = "" + ((i+1)*326 + (i*100)) + "px";
 		for (let j = 0; j < Math.pow(2, num_rounds-i-2); j++) {
-			
-			
 			let foo_span = document.createElement("span");
 			let round_height = j*height*Math.pow(2, i+1) + vertical_round_offset;
 			round_height += Math.pow(2, i-1) * height;

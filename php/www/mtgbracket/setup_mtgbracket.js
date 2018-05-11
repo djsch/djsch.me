@@ -1,5 +1,6 @@
 "use strict"
 
+// Create and return an HTML element that displays a bye.
 function createBye(i) {
 	let round_span = document.createElement("span");
 	let bye = document.createElement("p");
@@ -9,27 +10,32 @@ function createBye(i) {
 	return round_span;
 }
 
+// Fills the toggleableElements array with a list of elements that should be toggled
+// on and off -- that is to say, all elements which were generated 'visible'. Elements
+// which were generated 'hidden' should never be toggled on.
 function fillToggleableElements() {
-	console.log("toggleableElements is: " + toggleableElements.length);
-	if (toggleableElements.length == 0) {
-		let elements = document.getElementsByClassName("toggleable");
-		console.log("elements is: " + elements.length);
-		for (let i = 0; i < elements.length; i++) {
-        	if (elements[i].style.visibility == "visible") {
-        		toggleableElements.push(elements[i]);
-        	}
+	let elements = document.getElementsByClassName("toggleable");
+	console.log("elements is: " + elements.length);
+	for (let i = 0; i < elements.length; i++) {
+    	if (elements[i].style.visibility == "visible") {
+    		toggleableElements.push(elements[i]);
     	}
 	}
 }
 
+// Switches all toggleable elements on or off.
 function toggleOverlay() {
-	//let elements = document.getElementsByClassName("toggleable");
-	fillToggleableElements();
+    if (toggleableElements.length == 0) {
+	   fillToggleableElements();
+    }
 	for (let i = 0; i < toggleableElements.length; i++) {
         toggleableElements[i].style.visibility = toggleableElements[i].style.visibility == 'hidden' ? 'visible' : 'hidden';
     }
 }
 
+// Adds the given card_name to the bracket at start_round and all lower rounds. Also
+// recursively calls this function for all cards that card_name was matched against
+// that are visible in the current bracket view.
 function addRowFromRoot(card_name, start_round, start_col, start_row) {
 	var xmlhttp = new XMLHttpRequest();
 
@@ -98,17 +104,9 @@ function addRowFromRoot(card_name, start_round, start_col, start_row) {
     xmlhttp.send();
 }
 
-function getBracketSize(length) {
-    if (length > 4) {
-        console.log("returning 4");
-        return 4;
-    }
-    else {
-        console.log("returning length: " + length);
-        return length;
-    }
-}
-
+// Given a card_name and the last_round that should be filled out, create and fill a bracket
+// for the given card, ending at 'last_round' if it is specified, or the most recent
+// round that we have data for.
 // TODO: fix the way the backend fills out this JSON response so that I don't need to make
 // a whole bunch of requests to fill out a bracket.
 function getAndFillBracket(card_name, last_round=-1) {
@@ -140,7 +138,7 @@ function getAndFillBracket(card_name, last_round=-1) {
                 last_round = cards.length;
             }
 
-            let bracket_size = getBracketSize(cards.length);
+            let bracket_size = Math.min(cards.length, 4);
 			fillBracketDom(bracket_size, last_round);
 
             // If there are too many rounds to fit in the bracket, let the user choose a different
@@ -253,7 +251,6 @@ function getAndFillMatchups(card_name) {
     xmlhttp.open("GET","get_card_info.php?q="+escaped_card_name, true);
     xmlhttp.send();
 }
-
 
 // Check to see whether the requested card is a unique Magic card. If so, display it in the
 // requested style. If not, display the appropriate error or disambiguation.

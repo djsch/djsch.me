@@ -121,33 +121,8 @@ function fillMtgBracketWinners(comp, bracket_winners) {
             	}
             	i += 3;
             }
-
-            //console.log("before update");
-            //bracket_winners.printDebugString();           
+           
             bracket_winners.update(converted_cards);
-            //console.log("after update");
-            //bracket_winners.printDebugString();
-            /*
-            for (let i = 0; i < 9; i++) {
-				let branch_winners = bracket_winners.getBranchWinners(i);
-				let arr = branch_winners.getFullBranch();
-				for (let j = 0; j < arr.length; j++) {
-					if (arr[j] == "") {
-						compressed.push("xxx");
-					}
-					else {
-						let result = myMap.get(arr[j]);
-						if (result == null) {
-							throw "Couldn't find that card in the map: " + arr[j];
-							//compressed.push("xxx");
-						}
-						else {
-							compressed.push(padInt(result));
-						}
-					}
-				}
-			}
-			*/
 
 			//compressed.join(",");
 			// 'compessed' now has the string to display
