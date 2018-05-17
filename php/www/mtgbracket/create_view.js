@@ -1,7 +1,7 @@
 "use strict"
 
 function printFullBracket() {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 9; i++) {
         let foo = bracket_winners.getBranchWinners(i)
         if (foo) {
             foo.printDebugString();
@@ -9,12 +9,19 @@ function printFullBracket() {
     }
 }
 
-function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
-    console.log("card_name is: " + card_name);
-    console.log("col is: " + col);
-    console.log("row is: " + row);
-    console.log("pos is: " + pos);
+function changeXVisible(col, row, pos, visible) {
+    let rounds_and_bracket = document.getElementById("bracket_span").childNodes;
 
+    if (visible) {
+        rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[1].style.visibility = "visible";
+    }
+    else {
+        console.log("SETTING HIDDEN");
+        rounds_and_bracket[col*2].childNodes[row].childNodes[pos].childNodes[1].style.visibility = "hidden";
+    }
+}
+
+function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
     // Check what the last column is -- if it's the top 8, there are 3 columns. The divisions have 4.
     var last_col;
     if (isTop8()) {
@@ -41,8 +48,14 @@ function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
         cont.style.display = "block";
         let winning_card = document.getElementById("winning_card");
         getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
-        let button = document.getElementById("continue_button");
-        button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ", true)");
+        if (branch_num < 8) {
+            let button = document.getElementById("continue_button");
+            button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ", true)");
+        }
+        else {
+            let button = document.getElementById("continue_button");
+            button.style.visibility = "hidden";
+        }
 
         // Scroll the screen to the top, only the first time this happens.
         if (!bracket_winners.getBranchWinners(branch_num).hasScreenScrolled()) {
@@ -92,6 +105,11 @@ function showTop8() {
     }
 }
 
+function showBranchFromSelect() {
+    let ele = document.getElementById("division_selector");
+    showBranch(ele.selectedIndex, is_create);
+}
+
 function showBranch(branch_num, set_onclick) {
     clearPage();
 
@@ -100,6 +118,9 @@ function showBranch(branch_num, set_onclick) {
     cont.style.display = "none";
     let winning_card = document.getElementById("winning_card");
     winning_card.src = "";
+
+    let ele = document.getElementById("division_selector");
+    ele.value = branch_num;
 
     if (branch_num == 8) {
         fillBracketDom(3, 14); // show 3 rounds, last round is 14
@@ -125,10 +146,18 @@ function showBranch(branch_num, set_onclick) {
         for (let j = 0; j < num_rows; j++) {
             console.log("adding card " + cards[counter]);
             if (cards[counter] != "") {
-                getAndSetCardImage(cards[counter], rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0]);
+                let card = cards[counter];
+                getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0]);
+                if (set_onclick) {
+                    rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
+                }
             }
             if (cards[counter+1] != "") {
-                getAndSetCardImage(cards[(counter+1)], rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0])
+                let card = cards[counter+1];
+                getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0])
+                if (set_onclick) {
+                    rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
+                }
             }
             counter += 2;
         }
@@ -139,8 +168,8 @@ function showBranch(branch_num, set_onclick) {
         for (let i = 0; i < num_rows; i++) {
             // horizontal, vertical, left, image (not x)
             // TODO: cache the image somehow so I don't need to request it over and over and over again
-            rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(cards[i*2], 0);};
-            rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(cards[(i*2)+1], 0);};
+            //rounds_and_bracket[0].childNodes[i].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(cards[i*2], 0);};
+            //rounds_and_bracket[0].childNodes[i].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(cards[(i*2)+1], 0);};
         }
     }
 }
@@ -175,6 +204,7 @@ function fooBracket() {
     
     //console.log("before update");
     //bracket_winners.printDebugString();
+    is_create = false;
     fillMtgBracketWinners(saved_bracket.value, bracket_winners);
     //console.log("after update");
     //bracket_winners.printDebugString();
@@ -187,6 +217,9 @@ function fooBracket() {
 
 let button = document.getElementById("start");
 button.setAttribute("onclick", "initialize()");
+
+button = document.getElementById("select_division");
+button.setAttribute("onclick", "showBranchFromSelect()");
 
 button = document.getElementById("debug");
 button.setAttribute("onclick", "printFullBracket()");
@@ -204,5 +237,8 @@ button.setAttribute("onclick", "fooBracket()");
 //button.setAttribute("onclick", "getCardNameAndFill(\"bracket\", \"\")");
 
 let toggleableElements = [];
+let is_create = true;
 //var winners;
 let bracket_winners = new mtgBracketWinners();
+
+initialize();

@@ -129,15 +129,15 @@ class mtgBranchWinners {
     //   (therefore we alter round+1)
     setRoundWinner(card, round) {
         var last_col;
-        if (isTop8()) {
+        if (this.rounds.length == 4) {
             last_col = 3;
         }
         else {
             last_col = 4;
         }
 
-        //console.log("setRoundWinner called for: " + card);
-        //console.log("with round: " + round);
+        console.log("setRoundWinner called for: " + card);
+        console.log("with round: " + round);
         let index = this.rounds[round].indexOf(card);
         let row = Math.floor(index/2);
         //console.log("index is: " + index);
@@ -154,9 +154,18 @@ class mtgBranchWinners {
         }
         // Set the winning card to the next round.
         if (round < last_col) {
-            this.rounds[round+1][row] = card;
-            updateImageAndSetOnclick(card, this.branch_num, round+1, Math.floor(row/2), row%2);
+            // Don't update anything if this card is already where it's supposed to be.
+            if (this.rounds[round+1][row] != card) {
+                this.rounds[round+1][row] = card;
+                updateImageAndSetOnclick(card, this.branch_num, round+1, Math.floor(row/2), row%2);
+                changeXVisible(round, row, ((index+1)%2), true);
+                changeXVisible(round, row, index%2, false);
+                if (round+1 < last_col) {
+                    changeXVisible(round+1, Math.floor(row/2), (row+1)%2, false);
+                }
+            }
         }
+        // TODO: this seems all wrong. why are we depending on 4/5? 
         // If there are further rounds that need to be changed, change them.
         if (round < (last_col - 1)) {
             for (let i = round+2; i < 4; i++) {
@@ -165,6 +174,7 @@ class mtgBranchWinners {
                 if (this.rounds[i][row] == opp_card) {
                     this.rounds[i][row] = "";
                     updateImageAndSetOnclick("", this.branch_num, i, Math.floor(row/2), row%2);
+                    changeXVisible(i, Math.floor(row/2), (row+1)%2, false);
                 }
             }
         }
@@ -258,10 +268,11 @@ class mtgBranchWinners {
     }
 
     getWinner() {
-        if (isTop8()) {
+        if (this.rounds.length == 4) {
             return this.rounds[3][0];
         }
         else {
+            console.log("winner is: " + this.rounds[4][0]);
             return this.rounds[4][0];
         }
     }
