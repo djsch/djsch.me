@@ -84,6 +84,9 @@ handlers:
 - url: /mtgbracket/get_bracket_128.php
   script: /www/mtgbracket/get_bracket_128.php
 
+- url: /mtgbracket/get_128_results.php
+  script: /www/mtgbracket/get_128_results.php
+
 - url: /mtgbracket/info.htm
   static_files: www/mtgbracket/info.htm
   upload: www/mtgbracket/info.htm

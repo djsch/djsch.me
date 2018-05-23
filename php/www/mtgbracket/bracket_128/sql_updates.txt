@@ -1,0 +1,393 @@
+UPDATE mtgbracket_test SET round_8_opponent='', round_8_score=40 WHERE name='';
+UPDATE mtgbracket_test SET round_8_opponent='', round_8_score=60 WHERE name='';
+
+
+Knight of the White Orchid
+Carnophage
+
+UPDATE mtgbracket_test SET round_8_opponent='Ethersworn Canonist', round_8_score=40 WHERE name='Doomsday';
+UPDATE mtgbracket_test SET round_8_opponent='Doomsday', round_8_score=60 WHERE name='Ethersworn Canonist';
+
+Ethersworn Canonist
+Doomsday
+
+UPDATE mtgbracket_test SET round_8_opponent='Goblin Sharpshooter', round_8_score=40 WHERE name='White Knight';
+UPDATE mtgbracket_test SET round_8_opponent='White Knight', round_8_score=60 WHERE name='Goblin Sharpshooter';
+
+White Knight
+Goblin Sharpshooter
+
+UPDATE mtgbracket_test SET round_8_opponent='Ophiomancer', round_8_score=40 WHERE name='Leonin Arbiter';
+UPDATE mtgbracket_test SET round_8_opponent='Leonin Arbiter', round_8_score=60 WHERE name='Ophiomancer';
+
+Ophiomancer
+Leonin Arbiter
+
+UPDATE mtgbracket_test SET round_8_opponent='Imperial Recruiter', round_8_score=40 WHERE name='Containment Priest';
+UPDATE mtgbracket_test SET round_8_opponent='Containment Priest', round_8_score=60 WHERE name='Imperial Recruiter';
+
+
+Imperial Recruiter
+Containment Priest
+
+UPDATE mtgbracket_test SET round_8_opponent='Savannah Lions', round_8_score=40 WHERE name='Kor Spiritdancer';
+UPDATE mtgbracket_test SET round_8_opponent='Kor Spiritdancer', round_8_score=60 WHERE name='Savannah Lions';
+
+Kor Spiritdancer
+Savannah Lions
+
+UPDATE mtgbracket_test SET round_8_opponent='Isamaru, Hound of Konda', round_8_score=40 WHERE name='Erebos, God of the Dead';
+UPDATE mtgbracket_test SET round_8_opponent='Erebos, God of the Dead', round_8_score=60 WHERE name='Isamaru, Hound of Konda';
+
+Isamaru, Hound of Konda
+Erebos, God of the Dead
+
+UPDATE mtgbracket_test SET round_8_opponent='Thalia, Guardian of Thraben', round_8_score=40 WHERE name='Kalitas, Traitor of Ghet';
+UPDATE mtgbracket_test SET round_8_opponent='Kalitas, Traitor of Ghet', round_8_score=60 WHERE name='Thalia, Guardian of Thraben';
+
+Thalia, Guardian of Thraben
+Kalitas, Traitor of Ghet
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+UPDATE mtgbracket_test SET round_8_opponent='Doom Blade' WHERE name='Sanguine Bond';
+UPDATE mtgbracket_test SET round_8_opponent='Sanguine Bond' WHERE name='Doom Blade';
+
+Doom Blade
+Sanguine Bond
+
+UPDATE mtgbracket_test SET round_8_opponent='Goblin Chieftain' WHERE name='Infernal Tutor';
+UPDATE mtgbracket_test SET round_8_opponent='Infernal Tutor' WHERE name='Goblin Chieftain';
+
+Goblin Chieftain
+Infernal Tutor
+
+UPDATE mtgbracket_test SET round_8_opponent='Isochron Scepter' WHERE name='Whip of Erebos';
+UPDATE mtgbracket_test SET round_8_opponent='Whip of Erebos' WHERE name='Isochron Scepter';
+
+Isochron Scepter
+Whip of Erebos
+
+UPDATE mtgbracket_test SET round_8_opponent='Cabal Ritual' WHERE name='Dragonspeaker Shaman';
+UPDATE mtgbracket_test SET round_8_opponent='Dragonspeaker Shaman' WHERE name='Cabal Ritual';
+
+Cabal Ritual
+Dragonspeaker Shaman
+
+UPDATE mtgbracket_test SET round_8_opponent='Delver of Secrets' WHERE name='Graveborn Muse';
+UPDATE mtgbracket_test SET round_8_opponent='Graveborn Muse' WHERE name='Delver of Secrets';
+
+Delver of Secrets
+Graveborn Muse
+
+UPDATE mtgbracket_test SET round_8_opponent='Chief Engineer' WHERE name='Dark Ritual';
+UPDATE mtgbracket_test SET round_8_opponent='Dark Ritual' WHERE name='Chief Engineer';
+
+Chief Engineer
+Dark Ritual
+
+UPDATE mtgbracket_test SET round_8_opponent='Dark Confidant' WHERE name='Grizzly Bears';
+UPDATE mtgbracket_test SET round_8_opponent='Grizzly Bears' WHERE name='Dark Confidant';
+
+Dark Confidant
+Grizzly Bears
+
+UPDATE mtgbracket_test SET round_8_opponent='Nantuko Shade' WHERE name='Drana, Kalastria Bloodchief';
+UPDATE mtgbracket_test SET round_8_opponent='Drana, Kalastria Bloodchief' WHERE name='Nantuko Shade';
+
+Nantuko Shade
+Drana, Kalastria Bloodchief
+
+UPDATE mtgbracket_test SET round_8_opponent="Night's Whisper" WHERE name='Engineered Plague';
+UPDATE mtgbracket_test SET round_8_opponent='Engineered Plague' WHERE name="Night's Whisper";
+
+Night's Whisper
+Engineered Plague
+
+UPDATE mtgbracket_test SET round_8_opponent='Vampire Nighthawk' WHERE name='Phyrexian Obliterator';
+UPDATE mtgbracket_test SET round_8_opponent='Phyrexian Obliterator' WHERE name='Vampire Nighthawk';
+
+Vampire Nighthawk
+Phyrexian Obliterator
+
+UPDATE mtgbracket_test SET round_8_opponent='Murderous Cut' WHERE name='Skinshifter';
+UPDATE mtgbracket_test SET round_8_opponent='Skinshifter' WHERE name='Murderous Cut';
+
+Murderous Cut
+Skinshifter
+
+UPDATE mtgbracket_test SET round_8_opponent='Rofellos, Llanowar Emissary' WHERE name='Mother of Runes';
+UPDATE mtgbracket_test SET round_8_opponent='Mother of Runes' WHERE name='Rofellos, Llanowar Emissary';
+
+Rofellos, Llanowar Emissary
+Mother of Runes
+
+UPDATE mtgbracket_test SET round_8_opponent='Grim Tutor' WHERE name='Jaya Ballard, Task Mage';
+UPDATE mtgbracket_test SET round_8_opponent='Jaya Ballard, Task Mage' WHERE name='Grim Tutor';
+
+Grim Tutor
+Jaya Ballard, Task Mage
+
+UPDATE mtgbracket_test SET round_8_opponent='Fleshbag Marauder' WHERE name='Sylvan Advocate';
+UPDATE mtgbracket_test SET round_8_opponent='Sylvan Advocate' WHERE name='Fleshbag Marauder';
+
+Fleshbag Marauder
+Sylvan Advocate
+
+UPDATE mtgbracket_test SET round_8_opponent='Desecration Demon' WHERE name='Blood Artist';
+UPDATE mtgbracket_test SET round_8_opponent='Blood Artist' WHERE name='Desecration Demon';
+
+Desecration Demon
+Blood Artist
+
+UPDATE mtgbracket_test SET round_8_opponent='Death Baron' WHERE name='Tarmogoyf';
+UPDATE mtgbracket_test SET round_8_opponent='Tarmogoyf' WHERE name='Death Baron';
+
+Death Baron
+Tarmogoyf
+
+UPDATE mtgbracket_test SET round_8_opponent="Death's Shadow" WHERE name='Cemetery Reaper';
+UPDATE mtgbracket_test SET round_8_opponent='Cemetery Reaper' WHERE name="Death's Shadow";
+
+Death's Shadow
+Cemetery Reaper
+
+UPDATE mtgbracket_test SET round_8_opponent='Elvish Visionary' WHERE name='Goblin Warchief';
+UPDATE mtgbracket_test SET round_8_opponent='Goblin Warchief' WHERE name='Elvish Visionary';
+
+Elvish Visionary
+Goblin Warchief
+
+UPDATE mtgbracket_test SET round_8_opponent='Bloodline Keeper' WHERE name="Kataki, War's Wage";
+UPDATE mtgbracket_test SET round_8_opponent="Kataki, War's Wage" WHERE name='Bloodline Keeper';
+
+Bloodline Keeper
+Kataki, War's Wage
+
+UPDATE mtgbracket_test SET round_8_opponent='Slaughter Pact' WHERE name='Demonic Consultation';
+UPDATE mtgbracket_test SET round_8_opponent='Demonic Consultation' WHERE name='Slaughter Pact';
+
+Slaughter Pact
+Demonic Consultation
+
+UPDATE mtgbracket_test SET round_8_opponent='Sinew Sliver' WHERE name="All Hallow's Eve";
+UPDATE mtgbracket_test SET round_8_opponent="All Hallow's Eve" WHERE name='Sinew Sliver';
+
+Sinew Sliver
+All Hallow's Eve
+
+UPDATE mtgbracket_test SET round_8_opponent='Wall of Blossoms' WHERE name='Sorin Markov';
+UPDATE mtgbracket_test SET round_8_opponent='Sorin Markov' WHERE name='Wall of Blossoms';
+
+Wall of Blossoms
+Sorin Markov
+
+UPDATE mtgbracket_test SET round_8_opponent='Pentad Prism' WHERE name='Scroll Rack';
+UPDATE mtgbracket_test SET round_8_opponent='Scroll Rack' WHERE name='Pentad Prism';
+
+Pentad Prism
+Scroll Rack
+
+UPDATE mtgbracket_test SET round_8_opponent='Phantasmal Bear' WHERE name="Yawgmoth's Will";
+UPDATE mtgbracket_test SET round_8_opponent="Yawgmoth's Will" WHERE name='Phantasmal Bear';
+
+Phantasmal Bear
+Yawgmoth's Will
+
+UPDATE mtgbracket_test SET round_8_opponent='Grinding Station' WHERE name='Sudden Spoiling';
+UPDATE mtgbracket_test SET round_8_opponent='Sudden Spoiling' WHERE name='Grinding Station';
+
+Grinding Station
+Sudden Spoiling
+
+UPDATE mtgbracket_test SET round_8_opponent='Cursecatcher' WHERE name='Ad Nauseam';
+UPDATE mtgbracket_test SET round_8_opponent='Ad Nauseam' WHERE name='Cursecatcher';
+
+Cursecatcher
+Ad Nauseam
+
+UPDATE mtgbracket_test SET round_8_opponent='Archfiend of Depravity' WHERE name='Triskaidekaphobia';
+UPDATE mtgbracket_test SET round_8_opponent='Triskaidekaphobia' WHERE name='Archfiend of Depravity';
+
+Archfiend of Depravity
+Triskaidekaphobia
+
+UPDATE mtgbracket_test SET round_8_opponent='Puresteel Paladin' WHERE name='Sakura-Tribe Elder';
+UPDATE mtgbracket_test SET round_8_opponent='Sakura-Tribe Elder' WHERE name='Puresteel Paladin';
+
+
+Puresteel Paladin
+Sakura-Tribe Elder
+
+UPDATE mtgbracket_test SET round_8_opponent='Lotus Cobra' WHERE name='Read the Bones';
+UPDATE mtgbracket_test SET round_8_opponent='Read the Bones' WHERE name='Lotus Cobra';
+
+Lotus Cobra
+Read the Bones
+
+UPDATE mtgbracket_test SET round_8_opponent='Liliana, Heretical Healer' WHERE name='Suture Priest';
+UPDATE mtgbracket_test SET round_8_opponent='Suture Priest' WHERE name='Liliana, Heretical Healer';
+
+Liliana, Heretical Healer
+Suture Priest
+
+UPDATE mtgbracket_test SET round_8_opponent='Korlash, Heir to Blackblade' WHERE name='Martyr of Sands';
+UPDATE mtgbracket_test SET round_8_opponent='Martyr of Sands' WHERE name='Korlash, Heir to Blackblade';
+
+Korlash, Heir to Blackblade
+Martyr of Sands
+
+UPDATE mtgbracket_test SET round_8_opponent='Phyrexian Crusader' WHERE name='Tree of Perdition';
+UPDATE mtgbracket_test SET round_8_opponent='Tree of Perdition' WHERE name='Phyrexian Crusader';
+
+Phyrexian Crusader
+Tree of Perdition
+
+UPDATE mtgbracket_test SET round_8_opponent='Merfolk Looter' WHERE name='Victim of Night';
+UPDATE mtgbracket_test SET round_8_opponent='Victim of Night' WHERE name='Merfolk Looter';
+
+Merfolk Looter
+Victim of Night
+
+UPDATE mtgbracket_test SET round_8_opponent='Feldon of the Third Path' WHERE name='Guttersnipe';
+UPDATE mtgbracket_test SET round_8_opponent='Guttersnipe' WHERE name='Feldon of the Third Path';
+
+Feldon of the Third Path
+Guttersnipe
+
+UPDATE mtgbracket_test SET round_8_opponent='Nyx-Fleece Ram' WHERE name='Consuming Vapors';
+UPDATE mtgbracket_test SET round_8_opponent='Consuming Vapors' WHERE name='Nyx-Fleece Ram';
+
+Nyx-Fleece Ram
+Consuming Vapors
+
+UPDATE mtgbracket_test SET round_8_opponent='The Abyss' WHERE name="Soul's Attendant";
+UPDATE mtgbracket_test SET round_8_opponent="Soul's Attendant" WHERE name='The Abyss';
+
+The Abyss
+Soul's Attendant
+
+UPDATE mtgbracket_test SET round_8_opponent='Scavenging Ooze' WHERE name='Waste Not';
+UPDATE mtgbracket_test SET round_8_opponent='Waste Not' WHERE name='Scavenging Ooze';
+
+Scavenging Ooze
+Waste Not
+
+UPDATE mtgbracket_test SET round_8_opponent='Pack Rat' WHERE name="Yawgmoth's Bargain";
+UPDATE mtgbracket_test SET round_8_opponent="Yawgmoth's Bargain" WHERE name='Pack Rat';
+
+Pack Rat
+Yawgmoth's Bargain
+
+UPDATE mtgbracket_test SET round_8_opponent='Entomb' WHERE name='Descent into Madness';
+UPDATE mtgbracket_test SET round_8_opponent='Descent into Madness' WHERE name='Entomb';
+
+Entomb
+Descent into Madness
+
+UPDATE mtgbracket_test SET round_8_opponent='Simian Spirit Guide' WHERE name='Merciless Executioner';
+UPDATE mtgbracket_test SET round_8_opponent='Merciless Executioner' WHERE name='Simian Spirit Guide';
+
+Simian Spirit Guide
+Merciless Executioner
+
+UPDATE mtgbracket_test SET round_8_opponent='Murder' WHERE name='Precinct Captain';
+UPDATE mtgbracket_test SET round_8_opponent='Precinct Captain' WHERE name='Murder';
+
+Murder
+Precinct Captain
+
+UPDATE mtgbracket_test SET round_8_opponent='Argothian Enchantress' WHERE name='Sphere of Resistance';
+UPDATE mtgbracket_test SET round_8_opponent='Sphere of Resistance' WHERE name='Argothian Enchantress';
+
+Argothian Enchantress
+Sphere of Resistance
+
+UPDATE mtgbracket_test SET round_8_opponent="Jace, Vryn's Prodigy" WHERE name="Kiku, Night's Flower";
+UPDATE mtgbracket_test SET round_8_opponent="Kiku, Night's Flower" WHERE name="Jace, Vryn's Prodigy";
+
+Jace, Vryn's Prodigy
+Kiku, Night's Flower
+
+UPDATE mtgbracket_test SET round_8_opponent='Braids, Cabal Minion' WHERE name='Strangleroot Geist';
+UPDATE mtgbracket_test SET round_8_opponent='Strangleroot Geist' WHERE name='Braids, Cabal Minion';
+
+Braids, Cabal Minion
+Strangleroot Geist
+
+UPDATE mtgbracket_test SET round_8_opponent='Go for the Throat' WHERE name='Howling Mine';
+UPDATE mtgbracket_test SET round_8_opponent='Howling Mine' WHERE name='Go for the Throat';
+
+Go for the Throat
+Howling Mine
+
+UPDATE mtgbracket_test SET round_8_opponent='Genesis Chamber' WHERE name='Chainer, Dementia Master';
+UPDATE mtgbracket_test SET round_8_opponent='Chainer, Dementia Master' WHERE name='Genesis Chamber';
+
+Genesis Chamber
+Chainer, Dementia Master
+
+UPDATE mtgbracket_test SET round_8_opponent='Stoneforge Mystic' WHERE name='Booster Tutor';
+UPDATE mtgbracket_test SET round_8_opponent='Booster Tutor' WHERE name='Stoneforge Mystic';
+
+Stoneforge Mystic
+Booster Tutor
+
+UPDATE mtgbracket_test SET round_8_opponent='Ambush Viper' WHERE name='Dismember';
+UPDATE mtgbracket_test SET round_8_opponent='Dismember' WHERE name='Ambush Viper';
+
+Ambush Viper
+Dismember
+
+UPDATE mtgbracket_test SET round_8_opponent='Surgical Extraction' WHERE name='Ultimate Price';
+UPDATE mtgbracket_test SET round_8_opponent='Ultimate Price' WHERE name='Surgical Extraction';
+
+Surgical Extraction
+Ultimate Price
+
+UPDATE mtgbracket_test SET round_8_opponent='Hymn to Tourach' WHERE name='Nightscape Familiar';
+UPDATE mtgbracket_test SET round_8_opponent='Nightscape Familiar' WHERE name='Hymn to Tourach';
+
+Hymn to Tourach
+Nightscape Familiar
+
+UPDATE mtgbracket_test SET round_8_opponent='Vampiric Tutor' WHERE name='Magus of the Moon';
+UPDATE mtgbracket_test SET round_8_opponent='Magus of the Moon' WHERE name='Vampiric Tutor';
+
+Vampiric Tutor
+Magus of the Moon
+
+UPDATE mtgbracket_test SET round_8_opponent='Toxic Deluge' WHERE name="Dwynen's Elite";
+UPDATE mtgbracket_test SET round_8_opponent="Dwynen's Elite" WHERE name='Toxic Deluge';
+
+Toxic Deluge
+Dwynen's Elite
+
+UPDATE mtgbracket_test SET round_8_opponent='Corpse Dance' WHERE name='Lord of Atlantis';
+UPDATE mtgbracket_test SET round_8_opponent='Lord of Atlantis' WHERE name='Corpse Dance';
+
+Corpse Dance
+Lord of Atlantis
+
+UPDATE mtgbracket_test SET round_8_opponent='Terror' WHERE name='Diabolic Edict';
+UPDATE mtgbracket_test SET round_8_opponent='Diabolic Edict' WHERE name='Terror';
+
+Terror
+Diabolic Edict
+
+UPDATE mtgbracket_test SET round_8_opponent='Hypnotic Specter' WHERE name='Invisible Stalker';
+UPDATE mtgbracket_test SET round_8_opponent='Invisible Stalker' WHERE name='Hypnotic Specter';
+
+Hypnotic Specter
+Invisible Stalker
+
+UPDATE mtgbracket_test SET round_8_opponent='Avatar of the Resolute' WHERE name='Narcomoeba';
+UPDATE mtgbracket_test SET round_8_opponent='Narcomoeba' WHERE name='Avatar of the Resolute';
+
+Avatar of the Resolute
+Narcomoeba
