@@ -334,21 +334,180 @@ def update_sql():
     #if this is a problem i'll look into it more
     #update_last_batch()
 
-def update128():
-    #file = open("../php/www/mtgbracket/bracket_128/seeded_128_test.txt", "r") 
-    #for line in file: 
-    #    print line
-    #file.close()
-    print "writing to file now"
-    file = open("../php/www/mtgbracket/bracket_128/compressed_128_test.txt", "w")
-    file.write("I can write cross module\n")
-    file.close()
+# Returns a 3-digit string of i
+def padInt(i):
+    if i < 10:
+        return "00" + str(i)
+    elif i < 100:
+        return "0" + str(i)
+    else:
+        return str(i)
 
-def read128():
+def update128():
+    nameToInt = {}
+    intToName = {}
+    startingList = []
+
+    # Get the starting 128
+    db = MySQLdb.connect(user=sql_info.getUser(),
+                         passwd=sql_info.getPasswd(),
+                         host=sql_info.getHost(),
+                         db=sql_info.getDb())
+
+    query = """
+            SELECT * FROM bracket_128_test ORDER BY id ASC;
+            """
+    print query
+
+    cursor = db.cursor()
+    cursor.execute(query)
+
+    for row in cursor:
+        nameToInt[row[1]] = row[0]
+        intToName[row[0]] = row[1]
+        startingList.append(row[1])
+
+    cursor.close()
+
+    # Get the voting results
+    db_results = {}
+    columns = """
+              name, round_8_opponent, round_8_score,
+              round_9_opponent, round_9_score,
+              round_10_opponent, round_10_score,
+              round_11_opponent, round_11_score,
+              round_12_opponent, round_12_score,
+              round_13_opponent, round_13_score,
+              round_14_opponent, round_14_score
+              """;
+    query = """
+            SELECT {} FROM mtgbracket_test WHERE round_8_opponent IS NOT null;
+            """.format(columns)
+    print query
+
+    cursor = db.cursor()
+    cursor.execute(query)
+
+    for row in cursor:
+        db_results[row[0]] = row
+    cursor.close()
+
+    result_string = ""
+    top8 = []
+    # Do each of the 8 divisions
+    for i in range(8):
+        current_round = startingList[16*i:16*(i+1)]
+        next_round = []
+        # For each round
+        while len(current_round) is not 1:
+            # Output the code for each card, or 'xxx' if there is no card
+            for i in range(len(current_round)):
+                if (current_round[i] == "xxx"):
+                    result_string += "xxx"
+                else:
+                    result_string += padInt(nameToInt[current_round[i]])
+            # Fill in next_round with the winner of each matchup, or 'xxx' if it is not decided
+            for i in range(len(current_round)/2):
+                winner = getWinner(current_round[2*i], current_round[(2*i)+1], db_results)
+                next_round.append(winner)
+            # next_round becomes the current round
+            current_round = next_round
+            next_round = []
+        if current_round[0] == "xxx":
+            result_string += "xxx"
+            top8.append("xxx")
+        else:
+            result_string += padInt(nameToInt[current_round[0]])
+            top8.append(padInt(nameToInt[current_round[0]]))
+    print result_string
+
+    # Do the top 8
+    current_round = top8
+    next_round = []
+    # For each round
+    while len(current_round) is not 1:
+        # Output the code for each card, or 'xxx' if there is no card
+        for i in range(len(current_round)):
+            if (current_round[i] == "xxx"):
+                result_string += "xxx"
+            else:
+                result_string += padInt(nameToInt[current_round[i]])
+        # Fill in next_round with the winner of each matchup, or 'xxx' if it is not decided
+        for i in range(len(current_round)/2):
+            winner = getWinner(current_round[2*i], current_round[(2*i)+1], db_results)
+            next_round.append(winner)
+        # next_round becomes the current round
+        current_round = next_round
+        next_round = []
+    if current_round[0] == "xxx":
+        result_string += "xxx"
+    else:
+        result_string += padInt(nameToInt[current_round[0]])
+
+    # Save the string in a db
+    query = """
+            UPDATE compressed_bracket_test SET string = '{}' WHERE name = 'compressed_string';
+            """.format(result_string)
+    print query
+
+    cursor = db.cursor()
+    cursor.execute(query)
+    db.commit()
+    cursor.close()
+
+    db.close()
+
+def getWinner(card_1, card_2, db_results):
+    #print card_1
+    #print card_2
+    if card_1 == "xxx" or card_2 == "xxx":
+        return "xxx"
+    row = db_results[card_1]
+    indices = [1, 3, 5, 7, 9, 11, 13]
+    for i in indices:
+        if row[i] == card_2:
+            if row[i+1] is None:
+                return "xxx"
+            elif row[i+1] > 50:
+                return card_1
+            else:
+                return card_2
+    return "xxx"
+
+
+
+def update_initial_128():
     print "reading from file now"
-    file = open("../php/www/mtgbracket/bracket_128/compressed_128_test.txt", "r")
-    for line in file: 
-        print line
+    file = open("../php/www/mtgbracket/bracket_128/seeded_128_test.txt", "r")
+    db = MySQLdb.connect(user=sql_info.getUser(),
+                         passwd=sql_info.getPasswd(),
+                         host=sql_info.getHost(),
+                         db=sql_info.getDb())
+
+    i = 0
+    for line in file:
+        line = line.strip()
+
+        values = ""
+        values += "("
+        values += str(i)
+        values += ", \""
+        values += line
+        values += "\")"
+
+        query = """
+            INSERT INTO bracket_128_test (id, name) VALUES {};
+            """.format(values)
+        print query
+
+        cursor = db.cursor()
+        cursor.execute(query)
+        db.commit()
+        cursor.close()
+
+        i += 1
+
+    db.close()
     file.close()
 
 class MainPage(webapp2.RequestHandler):
@@ -357,7 +516,6 @@ class MainPage(webapp2.RequestHandler):
         self.response.write('Hello, World!')
         update_sql()
         update128()
-        read128()
 
 app = webapp2.WSGIApplication([
     ('/update_website_sql', MainPage),
@@ -366,5 +524,6 @@ app = webapp2.WSGIApplication([
 #print 'testing'
 #update_sql()
 #update128()
+#update_initial_128()
 #update_last_batch()
 #update_card_uris()
