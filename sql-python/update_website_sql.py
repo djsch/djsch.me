@@ -334,12 +334,30 @@ def update_sql():
     #if this is a problem i'll look into it more
     #update_last_batch()
 
+def update128():
+    #file = open("../php/www/mtgbracket/bracket_128/seeded_128_test.txt", "r") 
+    #for line in file: 
+    #    print line
+    #file.close()
+    print "writing to file now"
+    file = open("../php/www/mtgbracket/bracket_128/compressed_128_test.txt", "w")
+    file.write("I can write cross module\n")
+    file.close()
+
+def read128():
+    print "reading from file now"
+    file = open("../php/www/mtgbracket/bracket_128/compressed_128_test.txt", "r")
+    for line in file: 
+        print line
+    file.close()
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.write('Hello, World!')
         update_sql()
+        update128()
+        read128()
 
 app = webapp2.WSGIApplication([
     ('/update_website_sql', MainPage),
@@ -347,5 +365,6 @@ app = webapp2.WSGIApplication([
 
 #print 'testing'
 #update_sql()
+#update128()
 #update_last_batch()
 #update_card_uris()
