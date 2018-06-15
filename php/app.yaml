@@ -72,6 +72,11 @@ handlers:
   upload: www/mtgbracket/images/.*
   application_readable: true
 
+- url: /mtgbracket/bracket_128/seeded_128_test.txt
+  static_files: www/mtgbracket/bracket_128/seeded_128_test.txt
+  upload: www/mtgbracket/bracket_128/seeded_128_test.txt
+  application_readable: true
+
 - url: /mtgbracket/get_card_info.php
   script: /www/mtgbracket/get_card_info.php
 
@@ -86,6 +91,9 @@ handlers:
 
 - url: /mtgbracket/get_128_results.php
   script: /www/mtgbracket/get_128_results.php
+
+- url: /mtgbracket/get_compressed_128.php
+  script: /www/mtgbracket/get_compressed_128.php
 
 - url: /mtgbracket/info.htm
   static_files: www/mtgbracket/info.htm

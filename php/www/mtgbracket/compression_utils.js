@@ -86,7 +86,7 @@ function createAndDisplayCompression(bracket_winners) {
 
 // comp is a string of compressed winners
 // bracket_winners is an mtgBracketWinners object (that will have its data overwritten)
-function fillMtgBracketWinners(comp, bracket_winners) {
+function fillMtgBracketWinners(comp, bracket_winners, division, set_onclick) {
 
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -128,9 +128,23 @@ function fillMtgBracketWinners(comp, bracket_winners) {
 			// 'compessed' now has the string to display
 			//console.log("bbb");
 		    //bracket_winners.printDebugString();
-		    showBranch(0, false);
+		    showBranch(division, set_onclick, bracket_winners);
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
+    xmlhttp.send();
+}
+
+function fillActualMtgBracketWinners(division, set_onclick, bracket_winners) {
+	var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+       	if (this.readyState == 4 && this.status == 200) {
+       		let data = JSON.parse(this.responseText);
+       		console.log(data[0].string);
+
+       		fillMtgBracketWinners(data[0].string, bracket_winners, division, set_onclick)
+       	}
+    };
+    xmlhttp.open("GET","get_compressed_128.php", true);
     xmlhttp.send();
 }

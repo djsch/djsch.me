@@ -50,7 +50,7 @@ function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
         getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
         if (branch_num < 8) {
             let button = document.getElementById("continue_button");
-            button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ", true)");
+            button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ", true, bracket_winners)");
         }
         else {
             let button = document.getElementById("continue_button");
@@ -107,10 +107,21 @@ function showTop8() {
 
 function showBranchFromSelect() {
     let ele = document.getElementById("division_selector");
-    showBranch(ele.selectedIndex, is_create);
+    showBranch(ele.selectedIndex, is_create, bracket_winners);
 }
 
-function showBranch(branch_num, set_onclick) {
+// Returns whether the array contains a particular element AFTER a particular index (not including that index)
+function arrayContainsAfterIndex(arr, ele, index) {
+    for (let i = index + 1; i < arr.length; i++) {
+        if (arr[i] == ele) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// bracket is bracket_winners, or actual_bracket_winners if we're displaying the actual bracket.
+function showBranch(branch_num, set_onclick, bracket) {
     clearPage();
 
     // Hide 'continue' elements.
@@ -124,14 +135,14 @@ function showBranch(branch_num, set_onclick) {
 
     if (branch_num == 8) {
         fillBracketDom(3, 14); // show 3 rounds, last round is 14
-        bracket_winners.updateTop8();
+        bracket.updateTop8();
         //showTop8();
     }
     else {
         fillBracketDom(4, 11); // show 4 rounds, last round is 11
     }
 
-    let branch_winners = bracket_winners.getBranchWinners(branch_num);
+    let branch_winners = bracket.getBranchWinners(branch_num);
     let cards = branch_winners.getFullBranch();
     console.log("cards are: ");
     console.log(cards);
@@ -149,14 +160,25 @@ function showBranch(branch_num, set_onclick) {
                 let card = cards[counter];
                 getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0]);
                 if (set_onclick) {
-                    rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
+                    rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0].onclick = function(){bracket.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
                 }
             }
             if (cards[counter+1] != "") {
                 let card = cards[counter+1];
                 getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0])
+                
                 if (set_onclick) {
-                    rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0].onclick = function(){bracket_winners.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
+                    rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0].onclick = function(){bracket.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
+                }
+            }
+            if (cards[counter] != "" && cards[counter+1] != "") {
+                let card_1_contains = arrayContainsAfterIndex(cards, cards[counter], counter)
+                let card_2_contains = arrayContainsAfterIndex(cards, cards[counter+1], counter+1)
+                if (card_1_contains && !card_2_contains) {
+                    rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[1].style.visibility = "visible";
+                }
+                if (card_2_contains && !card_1_contains) {
+                    rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[1].style.visibility = "visible";
                 }
             }
             counter += 2;
@@ -194,7 +216,7 @@ function initialize() {
             console.log(data);
 
             bracket_winners.initialize(data);
-            showBranch(0, true);
+            showBranch(0, true, bracket_winners);
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
@@ -207,7 +229,7 @@ function fooBracket() {
     //console.log("before update");
     //bracket_winners.printDebugString();
     is_create = false;
-    fillMtgBracketWinners(saved_bracket.value, bracket_winners);
+    fillMtgBracketWinners(saved_bracket.value, bracket_winners, 0, false);
     //console.log("after update");
     //bracket_winners.printDebugString();
 
@@ -383,7 +405,7 @@ function testResultsStepTwo(data) {
 
             // Finish up and display the result.
             bracket_winners.update(final_list);
-            showBranch(0, false);
+            showBranch(0, false, bracket_winners);
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
@@ -410,6 +432,20 @@ function testResults() {
     xmlhttp.send();
 }
 
+// division is 0-8
+// 8 is top 8
+function viewActualBracket() {
+    let ele = document.getElementById("division_selector");
+    let division = ele.selectedIndex;
+    if (actual_bracket_winners == null) {
+        actual_bracket_winners = new mtgBracketWinners();
+        fillActualMtgBracketWinners(division, false, actual_bracket_winners);
+    }
+    else {
+        showBranch(division, false, actual_bracket_winners);
+    }
+}
+
 // How is showing the score going to work? I need to:
 //
 // * decompress the string, which requires the full 128
@@ -423,6 +459,9 @@ button.setAttribute("onclick", "showBranchFromSelect()");
 
 button = document.getElementById("debug");
 button.setAttribute("onclick", "printFullBracket()");
+
+button = document.getElementById("actual");
+button.setAttribute("onclick", "viewActualBracket()");
 
 button = document.getElementById("get_compression");
 button.setAttribute("onclick", "createAndDisplayCompression(bracket_winners)");
@@ -443,5 +482,6 @@ let toggleableElements = [];
 let is_create = true;
 //var winners;
 let bracket_winners = new mtgBracketWinners();
+let actual_bracket_winners = null;
 
 initialize();
