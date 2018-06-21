@@ -78,7 +78,7 @@ function addRowFromRoot(card_name, start_round, start_col, start_row) {
             	else if (cards[cur_round-1] == "(bye)") {
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[0].style.visibility = "hidden";
             		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[1].style.visibility = "hidden";
-            		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[3].style.visibility = "visible";
+            		rounds_and_bracket[(cur_col*2)].childNodes[cur_row].childNodes[1].childNodes[5].style.visibility = "visible";
             	}
             	// If there is a percentage, but it's less than 50, the card lost, show the left 'x'.
             	else if (percentages.length > cur_round-1 && percentages[cur_round-1] < 50) {

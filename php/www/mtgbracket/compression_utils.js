@@ -86,11 +86,15 @@ function createAndDisplayCompression(bracket_winners) {
 
 // comp is a string of compressed winners
 // bracket_winners is an mtgBracketWinners object (that will have its data overwritten)
-function fillMtgBracketWinners(comp, bracket_winners, division, set_onclick) {
+// if bracket_to_load is filled in, display that bracket instead, but also load
+function fillMtgBracketWinners(comp, bracket_winners, division, second_bracket_string_to_load, second_bracket_to_load, show_compare=false) {
 
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+
+        	console.log("start of fillMtgBracketWinners");
+        	console.log("comp is: " + comp);
         	//console.log("aaa");
 		    //bracket_winners.printDebugString();
 		    
@@ -128,21 +132,26 @@ function fillMtgBracketWinners(comp, bracket_winners, division, set_onclick) {
 			// 'compessed' now has the string to display
 			//console.log("bbb");
 		    //bracket_winners.printDebugString();
-		    showBranch(division, set_onclick, bracket_winners);
+		    if (second_bracket_string_to_load != "") {
+		    	fillMtgBracketWinners(second_bracket_string_to_load, second_bracket_to_load, 0, "", null, true);
+		    }
+		    else {
+		    	showBranch(division, false, bracket_winners, show_compare);
+		    }
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
     xmlhttp.send();
 }
 
-function fillActualMtgBracketWinners(division, set_onclick, bracket_winners) {
+function fillActualMtgBracketWinners(division, bracket_winners, bracket_string_to_load, bracket_to_load) {
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
        	if (this.readyState == 4 && this.status == 200) {
        		let data = JSON.parse(this.responseText);
        		console.log(data[0].string);
 
-       		fillMtgBracketWinners(data[0].string, bracket_winners, division, set_onclick)
+       		fillMtgBracketWinners(data[0].string, bracket_winners, division, bracket_string_to_load, bracket_to_load)
        	}
     };
     xmlhttp.open("GET","get_compressed_128.php", true);

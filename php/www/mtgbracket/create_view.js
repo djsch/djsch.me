@@ -1,10 +1,21 @@
 "use strict"
 
 function printFullBracket() {
+    console.log("printing the normal bracket");
     for (let i = 0; i < 9; i++) {
         let foo = bracket_winners.getBranchWinners(i)
         if (foo) {
             foo.printDebugString();
+        }
+    }
+
+    console.log("printing the results bracket");
+    if (actual_bracket_winners != null) {
+        for (let i = 0; i < 9; i++) {
+            let foo = actual_bracket_winners.getBranchWinners(i)
+            if (foo) {
+                foo.printDebugString();
+            }
         }
     }
 }
@@ -121,7 +132,9 @@ function arrayContainsAfterIndex(arr, ele, index) {
 }
 
 // bracket is bracket_winners, or actual_bracket_winners if we're displaying the actual bracket.
-function showBranch(branch_num, set_onclick, bracket) {
+// is_building is true if we are still building the bracket. it's false if we're displaying a completed bracket.
+// show_compare is if I should compare between the two brackets. there are some unreal hacks to make this happen.
+function showBranch(branch_num, is_building, bracket, show_compare=false) {
     clearPage();
 
     // Hide 'continue' elements.
@@ -159,7 +172,7 @@ function showBranch(branch_num, set_onclick, bracket) {
             if (cards[counter] != "") {
                 let card = cards[counter];
                 getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0]);
-                if (set_onclick) {
+                if (is_building) {
                     rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[0].onclick = function(){bracket.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
                 }
             }
@@ -167,10 +180,37 @@ function showBranch(branch_num, set_onclick, bracket) {
                 let card = cards[counter+1];
                 getAndSetCardImage(card, rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0])
                 
-                if (set_onclick) {
+                if (is_building) {
                     rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[0].onclick = function(){bracket.getBranchWinners(branch_num).setRoundWinner(card, i/2);};
                 }
             }
+
+
+            // This is the part where I try to compare the two brackets. Maybe get rid of or change this.
+            if (!is_building && show_compare) {
+                if (i > 0) { // i is the col; don't want to do this for the first column
+                    if (actual_bracket_winners.getCard(branch_num, i/2, j*2) == "") {
+                        rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[4].style.visibility = "visible";
+                    }
+                    else if (bracket_winners.getCard(branch_num, i/2, j*2) == actual_bracket_winners.getCard(branch_num, i/2, j*2)) {
+                        rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[3].style.visibility = "visible";
+                    }
+                    else {
+                        rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[1].style.visibility = "visible";
+                    }
+
+                    if (actual_bracket_winners.getCard(branch_num, i/2, (j*2)+1) == "") {
+                        rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[4].style.visibility = "visible";
+                    }
+                    else if (bracket_winners.getCard(branch_num, i/2, (j*2)+1) == actual_bracket_winners.getCard(branch_num, i/2, (j*2)+1)) {
+                        rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[3].style.visibility = "visible";
+                    }
+                    else {
+                        rounds_and_bracket[i].childNodes[j].childNodes[1].childNodes[1].style.visibility = "visible";
+                    }
+                }
+            }
+            /*
             if (cards[counter] != "" && cards[counter+1] != "") {
                 let card_1_contains = arrayContainsAfterIndex(cards, cards[counter], counter)
                 let card_2_contains = arrayContainsAfterIndex(cards, cards[counter+1], counter+1)
@@ -181,11 +221,12 @@ function showBranch(branch_num, set_onclick, bracket) {
                     rounds_and_bracket[i].childNodes[j].childNodes[0].childNodes[1].style.visibility = "visible";
                 }
             }
+            */
             counter += 2;
         }
     }
 
-    if (set_onclick) {
+    if (is_building) {
         let num_rows = rounds_and_bracket[0].childNodes.length;
         for (let i = 0; i < num_rows; i++) {
             // horizontal, vertical, left, image (not x)
@@ -200,6 +241,7 @@ function initialize() {
     clearPage();
 
     is_create = true;
+    let bracket_winners = new mtgBracketWinners();
 
     // Hide 'continue' elements.
     let cont = document.getElementById("continue");
@@ -223,20 +265,20 @@ function initialize() {
     xmlhttp.send();
 }
 
-function fooBracket() {
-    let saved_bracket = document.getElementById("saved_bracket");
-    
-    //console.log("before update");
-    //bracket_winners.printDebugString();
+function undoCompression() {
     is_create = false;
-    fillMtgBracketWinners(saved_bracket.value, bracket_winners, 0, false);
-    //console.log("after update");
-    //bracket_winners.printDebugString();
 
+    let saved_bracket = document.getElementById("saved_bracket");
 
-    //debug();
-
-    //showBranch(0);
+    let ele = document.getElementById("division_selector");
+    let division = ele.selectedIndex;
+    if (actual_bracket_winners == null) {
+        actual_bracket_winners = new mtgBracketWinners();
+        fillActualMtgBracketWinners(division, actual_bracket_winners, saved_bracket.value, bracket_winners);
+    }
+    else {
+        fillMtgBracketWinners(saved_bracket.value, bracket_winners, 0, "", null);
+    }
 }
 
 function getWinner(data, card, opp) {
@@ -439,7 +481,7 @@ function viewActualBracket() {
     let division = ele.selectedIndex;
     if (actual_bracket_winners == null) {
         actual_bracket_winners = new mtgBracketWinners();
-        fillActualMtgBracketWinners(division, false, actual_bracket_winners);
+        fillActualMtgBracketWinners(division, actual_bracket_winners, "", null);
     }
     else {
         showBranch(division, false, actual_bracket_winners);
@@ -467,7 +509,7 @@ button = document.getElementById("get_compression");
 button.setAttribute("onclick", "createAndDisplayCompression(bracket_winners)");
 
 button = document.getElementById("undo_compression");
-button.setAttribute("onclick", "fooBracket()");
+button.setAttribute("onclick", "undoCompression()");
 
 button = document.getElementById("see_results");
 button.setAttribute("onclick", "testResults()");

@@ -90,9 +90,19 @@ function createRound(view, round=-1) {
 	let left_percent = document.createElement("p");
 	left_percent.className = "percent_text text_shadow toggleable";
 	left_percent.style.visibility = "visible";
+	let left_check = document.createElement("img");
+	left_check.className = x_classname;
+	left_check.src = "images/greenchecktransparent.png";
+	left_check.style.visibility = "hidden";
+	let left_question = document.createElement("img");
+	left_question.className = x_classname;
+	left_question.src = "images/questionmark.png";
+	left_question.style.visibility = "hidden";
 	left_div.appendChild(left_img);
 	left_div.appendChild(left_x);
 	left_div.appendChild(left_percent);
+	left_div.appendChild(left_check);
+	left_div.appendChild(left_question);
 
 	let right_div = document.createElement("div");
 	right_div.className = "parent";
@@ -111,6 +121,14 @@ function createRound(view, round=-1) {
 	let right_percent = document.createElement("p");
 	right_percent.className = "percent_text text_shadow toggleable";
 	right_percent.style.visibility = "visible";
+	let right_check = document.createElement("img");
+	right_check.className = x_classname;
+	right_check.src = "images/greenchecktransparent.png";
+	right_check.style.visibility = "hidden";
+	let right_question = document.createElement("img");
+	right_question.className = x_classname;
+	right_question.src = "images/questionmark.png";
+	right_question.style.visibility = "hidden";
 	let right_bye = document.createElement("p");
 	right_bye.className = "bye_text";
 	right_bye.innerHTML = "Bye";
@@ -118,6 +136,8 @@ function createRound(view, round=-1) {
 	right_div.appendChild(right_img);
 	right_div.appendChild(right_x);
 	right_div.appendChild(right_percent);
+	right_div.appendChild(right_check);
+	right_div.appendChild(right_question);
 	right_div.appendChild(right_bye);
 
 	if (view == "matchups") {

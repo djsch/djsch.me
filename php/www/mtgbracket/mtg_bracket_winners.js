@@ -46,6 +46,10 @@ class mtgBracketWinners {
         }
     }
 
+    getCard(division, row, col) {
+        return this.branches[division].getCard(row, col);
+    }
+
     updateTop8(){
         let winners = new Array();
         for (let i = 0; i < 8; i++) {
@@ -235,7 +239,13 @@ class mtgBranchWinners {
         }
     }
 
-
+    getCard(row, col) {
+        console.log("printing " + row + " " + col);
+        console.log(this.rounds);
+        console.log(this.rounds[row]);
+        console.log(this.rounds[row][col]);
+        return this.rounds[row][col];
+    }
 
     isComplete() {
         for (let i = 0; i < this.rounds.length; i++) {
