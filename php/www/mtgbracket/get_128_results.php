@@ -15,12 +15,9 @@ if (!$con) {
 }
 
 mysqli_select_db($con,"mtgbracket_dev");
-//$sql="SELECT * FROM mtgbracket_dev WHERE round_6_opponent IS NOT NULL";
+//$sql="SELECT * FROM mtgbracket_dev WHERE round_8_opponent IS NOT NULL";
 $sql="SELECT * FROM mtgbracket_test WHERE round_8_opponent IS NOT NULL";
 $result = mysqli_query($con,$sql);
-
-//$array = mysqli_fetch_row($result);
-//echo json_encode($array);
 
 // TODO: change the whole database structure so that we don't need to get
 // extraneous columns.

@@ -1,5 +1,7 @@
 "use strict"
 
+// Given a positive int 3 digits or less, pad it with leading '0' characters
+// to make it exactly 3 digits, then return the corresponding string.
 function padInt(i) {
 	if (i >= 100) {
 		return i.toString();
@@ -16,6 +18,8 @@ function padInt(i) {
 	}
 }
 
+// Given a string representing an int up to 3 digits long, return
+// the corresponding int.
 function unpadString(str) {
 	if (str == "xxx") {
 		return -1;
@@ -33,32 +37,28 @@ function unpadString(str) {
 	}
 }
 
-// winners is a mtgBracketWinners object
+// Given an mtgBracketWinners object, display its corresponding compression string.
 function createAndDisplayCompression(bracket_winners) {
-	console.log("testing printing argument");
-	console.log(bracket_winners.printDebugString());
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-        	console.log(this.responseText);
             let data = JSON.parse(this.responseText);
-            console.log(data);
 
             let compressed = new Array();
             let myMap = new Map();
-            // Create the map from the response.
+
+            // Create the card-to-string map from the response.
             for (let i = 0; i < data.length; i++) {
 				myMap.set(data[i], i);
             }
 
+            // For each branch...
             for (let i = 0; i < 9; i++) {
 				let branch_winners = bracket_winners.getBranchWinners(i);
-				// If this branch hasn't been created yet, fill it with 
-				//if (branch_winners == null) {
-				//	continue;
-				//}
 				let arr = branch_winners.getFullBranch();
+				// ...for each card...
 				for (let j = 0; j < arr.length; j++) {
+					// ...append the corresponding string to 'compressed'.
 					if (arr[j] == "") {
 						compressed.push("xxx");
 					}
@@ -92,15 +92,7 @@ function fillMtgBracketWinners(comp, bracket_winners, division, second_bracket_s
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-
-        	console.log("start of fillMtgBracketWinners");
-        	console.log("comp is: " + comp);
-        	//console.log("aaa");
-		    //bracket_winners.printDebugString();
-		    
-        	//console.log(this.responseText);
             let data = JSON.parse(this.responseText);
-            //console.log(data);
 
             let converted_cards = new Array();
             let myMap = new Map();
@@ -108,8 +100,6 @@ function fillMtgBracketWinners(comp, bracket_winners, division, second_bracket_s
             for (let i = 0; i < data.length; i++) {
 				myMap.set(i, data[i]);
             }
-            //console.log("map is: ");
-            //console.log(myMap);
 
             let i = 0;
             while (i < comp.length) {
@@ -128,10 +118,7 @@ function fillMtgBracketWinners(comp, bracket_winners, division, second_bracket_s
            
             bracket_winners.update(converted_cards);
 
-			//compressed.join(",");
 			// 'compessed' now has the string to display
-			//console.log("bbb");
-		    //bracket_winners.printDebugString();
 		    if (second_bracket_string_to_load != "") {
 		    	fillMtgBracketWinners(second_bracket_string_to_load, second_bracket_to_load, 0, "", null, true);
 		    }
