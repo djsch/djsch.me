@@ -51,25 +51,41 @@ function updateImageAndSetOnclick(card_name, branch_num, col, row, pos) {
         getAndSetCardImage(card_name, getImageFromBracket(rounds_and_bracket, col, row, pos));
     }
 
-    // If we've finished filling out this bracket, un-hide the continue dialogue.
+    // If we've finished filling out this division, un-hide the continue dialogue.
     if (bracket_winners.getBranchWinners(branch_num).isComplete()) {
         let cont = document.getElementById("continue");
         cont.style.display = "block";
+
         let winning_card = document.getElementById("winning_card");
         getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
+        // For divisions, unhide the elements to continue to the next division.
         if (branch_num < 8) {
+            let title_ele = document.getElementById("title_division");
+            title_ele.style.display = "block";
+
+            let cont_div = document.getElementById("cont_division");
+            cont_div.style.display = "block";
+
             let button = document.getElementById("continue_button");
             button.setAttribute("onclick", "showBranch(" + (branch_num+1) + ", true, bracket_winners)");
         }
+        // For the top 8, unhide the changed title.
         else {
-            let button = document.getElementById("continue_button");
-            button.style.visibility = "hidden";
+            let title_ele = document.getElementById("title_top8");
+            title_ele.style.display = "block";
         }
 
         // Scroll the screen to the top, only the first time this happens.
         if (!bracket_winners.getBranchWinners(branch_num).hasScreenScrolled()) {
             scroll(0,0);
             bracket_winners.getBranchWinners(branch_num).setScreenScrolled();
+        }
+
+        // If we've finished filling out the entire bracket (8 divisions and top8),
+        // unhide the dialogue in the header.
+        if (branch_num == 8) {
+            let header_ele = document.getElementById("post_finish_create");
+            header_ele.style.display = "block";
         }
 
     }
@@ -115,7 +131,12 @@ function showTop8() {
 
 function showBranchFromSelect() {
     let ele = document.getElementById("division_selector");
-    showBranch(ele.selectedIndex, is_create, bracket_winners);
+    if (cur_view == "actual") {
+        showBranch(ele.selectedIndex, is_create, actual_bracket_winners);
+    }
+    else {
+        showBranch(ele.selectedIndex, is_create, bracket_winners);
+    }
 }
 
 // Returns whether the array contains a particular element AFTER a particular index (not including that index)
@@ -128,17 +149,39 @@ function arrayContainsAfterIndex(arr, ele, index) {
     return false;
 }
 
+function hideContinue() {
+    let ele = document.getElementById("continue");
+    ele.style.display = "none";
+    ele = document.getElementById("title_division");
+    ele.style.display = "none";
+    ele = document.getElementById("title_top8");
+    ele.style.display = "none";
+    ele = document.getElementById("cont_division");
+    ele.style.display = "none";
+    let winning_card = document.getElementById("winning_card");
+    winning_card.src = "";
+}
+
 // bracket is bracket_winners, or actual_bracket_winners if we're displaying the actual bracket.
 // is_building is true if we are still building the bracket. it's false if we're displaying a completed bracket.
 // show_compare is if I should compare between the two brackets. there are some unreal hacks to make this happen.
+// later on -- I 'm not sure if those hacks are even remotely close to working correctly.
 function showBranch(branch_num, is_building, bracket, show_compare=false) {
+    if (cur_view == "actual") {
+        show_compare = false;
+    }
+    else {
+        show_compare = true;
+    }
     clearPage();
 
     // Hide 'continue' elements.
-    let cont = document.getElementById("continue");
-    cont.style.display = "none";
-    let winning_card = document.getElementById("winning_card");
-    winning_card.src = "";
+    hideContinue();
+
+    //let cont = document.getElementById("continue");
+    //cont.style.display = "none";
+    //let winning_card = document.getElementById("winning_card");
+    //winning_card.src = "";
 
     let ele = document.getElementById("division_selector");
     ele.value = branch_num;
@@ -160,7 +203,6 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
     console.log("doing columns: " + num_cols);
     let counter = 0;
     for (let col = 0; col*2 < num_cols; col++) {
-        console.log("col is: " + col);
         let num_rows = rounds_and_bracket[col*2].childNodes.length;
         for (let row = 0; row < num_rows; row++) {
             if (cards[counter] != "") {
@@ -204,6 +246,19 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
                     }
                 }
             }
+
+            // Show markers for brackets in progress
+            if (is_building) {
+                if (bracket_winners.getCard(branch_num, col+1, row) == "") {
+                    //do nothing
+                }
+                else if (bracket_winners.getCard(branch_num, col, row*2) != bracket_winners.getCard(branch_num, col+1, row)) {
+                    getXFromBracket(rounds_and_bracket, col, row, 0).style.visibility = "visible";
+                }
+                else if (bracket_winners.getCard(branch_num, col, (row*2)+1) != bracket_winners.getCard(branch_num, col+1, row)) {
+                    getXFromBracket(rounds_and_bracket, col, row, 1).style.visibility = "visible";
+                }
+            }
             counter += 2;
         }
     }
@@ -216,10 +271,13 @@ function initialize() {
     bracket_winners = new mtgBracketWinners();
 
     // Hide 'continue' elements.
-    let cont = document.getElementById("continue");
-    cont.style.display = "none";
-    let winning_card = document.getElementById("winning_card");
-    winning_card.src = "";
+    hideContinue();
+    //let cont = document.getElementById("continue");
+    //cont.style.display = "none";
+    //let winning_card = document.getElementById("winning_card");
+    //winning_card.src = "";
+
+    setViewStatus("create");
 
 
     var xmlhttp = new XMLHttpRequest();
@@ -237,19 +295,23 @@ function initialize() {
     xmlhttp.send();
 }
 
-function undoCompression() {
+function undoCompression(compressed_bracket="") {
     is_create = false;
 
-    let saved_bracket = document.getElementById("saved_bracket");
+    if (compressed_bracket == "") {
+        setViewStatus("compressed_bracket");
+        let saved_bracket = document.getElementById("saved_bracket");
+        compressed_bracket = saved_bracket.value
+    }
 
     let ele = document.getElementById("division_selector");
     let division = ele.selectedIndex;
     if (actual_bracket_winners == null) {
         actual_bracket_winners = new mtgBracketWinners();
-        fillActualMtgBracketWinners(division, actual_bracket_winners, saved_bracket.value, bracket_winners);
+        fillActualMtgBracketWinners(division, actual_bracket_winners, compressed_bracket, bracket_winners);
     }
     else {
-        fillMtgBracketWinners(saved_bracket.value, bracket_winners, 0, "", null);
+        fillMtgBracketWinners(compressed_bracket, bracket_winners, 0, "", null);
     }
 }
 
@@ -419,6 +481,8 @@ function showActualResultsHelper(data) {
     xmlhttp.send();
 }
 
+
+// PRETTY SURE THIS SHOULD BE DEPRECATED!!!!!
 function showActualResults() {
     is_create = false;
 
@@ -441,6 +505,7 @@ function showActualResults() {
 function viewActualBracket() {
     let ele = document.getElementById("division_selector");
     let division = ele.selectedIndex;
+    setViewStatus("actual");
     if (actual_bracket_winners == null) {
         actual_bracket_winners = new mtgBracketWinners();
         fillActualMtgBracketWinners(division, actual_bracket_winners, "", null);
@@ -450,30 +515,142 @@ function viewActualBracket() {
     }
 }
 
+/*
+function generateCompressedBracketAndSave() {
+    createAndSaveCompression(bracket_winners, )
+}
+*/
+function testSave() {
+    saveBracket("test_user", "0123456");
+}
+
+function saveBracket(name, compressed_bracket) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("this is the response text:" + this.responseText);
+            if (this.responseText == "ERROR: Name already exists!") {
+                let error_ele = document.getElementById("save_error");
+                error_ele.style.display = "block";
+                error_ele.innerHTML = "Sorry, that name is already in use. Try another name?";
+            }
+            else if (this.responseText == "SUCCESS") {
+                let error_ele = document.getElementById("save_error");
+                error_ele.style.display = "block";
+                error_ele.innerHTML = "Bracket Saved Successfully!";
+            }
+            else {
+                let error_ele = document.getElementById("save_error");
+                error_ele.style.display = "block";
+                error_ele.innerHTML = "Sorry, there was some error. Please try again, or contact me to see what's up.";
+            }
+        }
+    };
+    xmlhttp.open("POST","save_bracket.php", true);
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    let str = "name=";
+    str += name;
+    str += "&bracket=";
+    str += compressed_bracket;
+    console.log("str is: " + str);
+    xmlhttp.send(str);
+}
+
+function loadBracket() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            setViewStatus("compressed_bracket");
+            console.log(this.responseText);
+            let data = JSON.parse(this.responseText);
+            
+            undoCompression(data[0]);
+        }
+    };
+    let name = document.getElementById("header_load_name").value;
+    xmlhttp.open("GET","load_bracket.php?q=" + name, true);
+    //xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    xmlhttp.send();
+}
+
+function seeView() {
+	let view_ele = document.getElementById("view_elements");
+	let create_ele = document.getElementById("create_elements");
+	view_ele.style.display = "block";
+	create_ele.style.display = "none";
+}
+
+function seeCreate() {
+	let view_ele = document.getElementById("view_elements");
+	let create_ele = document.getElementById("create_elements");
+	view_ele.style.display = "none";
+	create_ele.style.display = "block";
+}
+
+// TODO: This is a horrible hack and really shouldn't work this way.
+function setViewStatus(str, param="") {
+    if (str == "compressed_bracket") {
+        let ele = document.getElementById("bracket_status");
+        ele.innerHTML = "Now Viewing a Custom Bracket";
+        ele.style.display = "block";
+        ele = document.getElementById("actual_status");
+        ele.style.display = "none";
+        cur_view = "default";
+    }
+    if (str == "actual") {
+        let ele = document.getElementById("bracket_status");
+        ele.style.display = "none";
+        ele = document.getElementById("actual_status");
+        ele.style.display = "block";
+        cur_view = "actual";
+    }
+    if (str == "create") {
+        let ele = document.getElementById("bracket_status");
+        ele.innerHTML = "Now Creating Your Own Bracket";
+        ele.style.display = "block";
+        ele = document.getElementById("actual_status");
+        ele.style.display = "none";
+        cur_view = "default";
+    }
+}
+
 let button = document.getElementById("start");
 button.setAttribute("onclick", "initialize()");
 
 button = document.getElementById("select_division");
 button.setAttribute("onclick", "showBranchFromSelect()");
 
-button = document.getElementById("debug");
-button.setAttribute("onclick", "printFullBracket()");
+//button = document.getElementById("debug");
+//button.setAttribute("onclick", "printFullBracket()");
 
 button = document.getElementById("actual");
 button.setAttribute("onclick", "viewActualBracket()");
 
-button = document.getElementById("get_compression");
+button = document.getElementById("get_compressed_bracket");
 button.setAttribute("onclick", "createAndDisplayCompression(bracket_winners)");
 
 button = document.getElementById("undo_compression");
 button.setAttribute("onclick", "undoCompression()");
 
-button = document.getElementById("see_results");
-button.setAttribute("onclick", "showActualResults()");
+//button = document.getElementById("see_results");
+//BUtton.setAttribute("onclick", "showActualResults()");
+
+button = document.getElementById("header_load_button");
+button.setAttribute("onclick", "loadBracket()");
+
+button = document.getElementById("see_view");
+button.setAttribute("onclick", "seeView()");
+
+button = document.getElementById("see_create");
+button.setAttribute("onclick", "seeCreate()");
+
+button = document.getElementById("header_save_button");
+button.setAttribute("onclick", "createAndSaveCompression(bracket_winners, document.getElementById(\"header_name_input\").value)");
 
 let toggleableElements = [];
 let is_create = true;
 let bracket_winners = new mtgBracketWinners();
 let actual_bracket_winners = null;
+let cur_view = "default";
 
 initialize();

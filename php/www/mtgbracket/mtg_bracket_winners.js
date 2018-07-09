@@ -47,6 +47,15 @@ class mtgBracketWinners {
         }
     }
 
+    isComplete() {
+        for (let i = 0; i < 9; i++) {
+            if (!this.branches[i].isComplete()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Gets the card in the given division, row, and column.
     getCard(division, row, col) {
         return this.branches[division].getCard(row, col);

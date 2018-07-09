@@ -83,53 +83,92 @@
 
 <body style="background-color:white">
 
-<h1>Create or view brackets</h1>
-<!--
+<h1 id="bracket_status">Now Creating Your Own Bracket</h1>
+<h1 id="actual_status" class="start_hidden">Now Viewing the Live Bracket Results</h1>
+
 <div>
-<a href="info.htm">What's this?</a>
+<a href="view_create_explain.htm">How's this work?</a>
 <a href="contact.htm">Contact Me</a>
-<a href="changelog.htm">Changelog</a>
 </div>
--->
-<!--
-<div id="user_input">
+
+<div>
+	<td id="Currently Viewing">Go to division:</td>
+	<select id="division_selector">
+	  <option value="0">Division 1</option>
+	  <option value="1">Division 2</option>
+	  <option value="2">Division 3</option>
+	  <option value="3">Division 4</option>
+	  <option value="4">Division 5</option>
+	  <option value="5">Division 6</option>
+	  <option value="6">Division 7</option>
+	  <option value="7">Division 8</option>
+	  <option value="8">Top 8</option>
+	</select>
+	<input type="button" id="select_division" value="Go!">
+</div>
+
+<div id="create_elements">
+	<td>You're viewing actions relating to creating your own bracket. Want to view a bracket instead?</td>
+	<input type="button" id="see_view" value="Go!">
 	<div>
-		<label for="input_textbox">Choose a card: </label>
-		<input type="text" id="input_textbox">
+		<input type="button" id="start" value="Start Over">
 	</div>
-	<input type="button" id="matchupsButton" value="View Matchups">
-	<input type="button" id="toggleButton" value="Toggle Overlay">
-	<input type="button" id="bracketButton" value="View Bracket">
+	<div id="post_finish_create" class="start_hidden">
+		<div>
+			<textarea id="compressed_bracket_text" rows="4" cols="50">Generate your bracket data here.</textarea>
+			<input type="button" id="get_compressed_bracket" value="Go">
+		</div>
+		<div>
+			<td>Name:</td>
+			<input type="text" id="header_name_input">
+			<input type="button" id="header_save_button" value="Save your bracket">
+		</div>
+		<div>
+			<p id="save_error" class="start_hidden"></p>
+		</div>
+	</div>
 </div>
+</div>
+
+<div id="view_elements" class="start_hidden">
+	<div>
+		<td>You're viewing actions relating to viewing a bracket. Want to create your own bracket instead?</td>
+		<input type="button" id="see_create" value="Go!">
+	</div>
+	
+	<!--<input type="button" id="debug" value="Debug">-->
+	<div>
+		<input type="button" id="actual" value="See Live Bracket Results">
+	</div>
+	<div id="compession_input">
+		<textarea id="saved_bracket" rows="4" cols="50">Copy a saved bracket here.</textarea>
+		<input type="button" id="undo_compression" value="Display Bracket">
+	</div>
+	<div>
+		<td>Name:</td>
+		<input type="text" id="header_load_name">
+		<input type="button" id="header_load_button" value="Load bracket by user">
+	</div>
+	
+	<!--<input type="button" id="see_results" value="See Results">-->
+	
+</div>
+
+<!--
+<input type="button" id="foo_test" value="Test Save">
+<input type="button" id="foo_load_test" value="Test Load">
 -->
-<input type="button" id="start" value="Start">
-<select id="division_selector">
-  <option value="0">Division 1</option>
-  <option value="1">Division 2</option>
-  <option value="2">Division 3</option>
-  <option value="3">Division 4</option>
-  <option value="4">Division 5</option>
-  <option value="5">Division 6</option>
-  <option value="6">Division 7</option>
-  <option value="7">Division 8</option>
-  <option value="8">Top 8</option>
-</select>
-<input type="button" id="select_division" value="See Division">
-<input type="button" id="debug" value="Debug">
-<input type="button" id="actual" value="See Actual Bracket">
-<div id="compession_input">
-	<textarea id="saved_bracket" rows="4" cols="50">View a saved bracket here.</textarea>
-</div>
-<input type="button" id="get_compression" value="Get Code">
-<input type="button" id="undo_compression" value="Display Bracket">
-<input type="button" id="see_results" value="See Results">
+
 <div id="error"></div>
 <div id="rounds"></div>
 
 <div id="continue" class="start_hidden">
-	<h1>Winner of this Division</h1>
+	<h1 id="title_division", class="start_hidden">Winner of this Division</h1>
+	<h1 id="title_top8", class="start_hidden">Winner of the entire bracket!</h1>
 	<img class="card_image" id="winning_card"></img>
-	<input type="button" id="continue_button" value="Continue to the next division">
+	<div id="cont_division" class="start_hidden">
+		<input type="button" id="continue_button" value="Continue to the next division">
+	</div>
 </div>
 <div id="bracket">
 	<div id="change_bracket_bounds"></div>

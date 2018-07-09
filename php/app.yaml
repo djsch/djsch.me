@@ -95,6 +95,12 @@ handlers:
 - url: /mtgbracket/get_compressed_128.php
   script: /www/mtgbracket/get_compressed_128.php
 
+- url: /mtgbracket/save_bracket.php
+  script: /www/mtgbracket/save_bracket.php
+
+- url: /mtgbracket/load_bracket.php
+  script: /www/mtgbracket/load_bracket.php
+
 - url: /mtgbracket/info.htm
   static_files: www/mtgbracket/info.htm
   upload: www/mtgbracket/info.htm
@@ -102,6 +108,10 @@ handlers:
 - url: /mtgbracket/contact.htm
   static_files: www/mtgbracket/contact.htm
   upload: www/mtgbracket/contact.htm
+
+- url: /mtgbracket/view_create_explain.htm
+  static_files: www/mtgbracket/view_create_explain.htm
+  upload: www/mtgbracket/view_create_explain.htm
 
 - url: /mtgbracket/changelog.htm
   static_files: www/mtgbracket/changelog.htm

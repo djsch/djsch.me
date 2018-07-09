@@ -38,7 +38,7 @@ function unpadString(str) {
 }
 
 // Given an mtgBracketWinners object, display its corresponding compression string.
-function createAndDisplayCompression(bracket_winners) {
+function createAndSaveCompression(bracket_winners, name) {
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -77,7 +77,59 @@ function createAndDisplayCompression(bracket_winners) {
 
 			let value = compressed.join("");
 			// 'compessed' now has the string to display
-			document.getElementById("saved_bracket").value = value;
+			saveBracket(name, value);
+			//document.getElementById("saved_bracket").value = value;
+        }
+    };
+    xmlhttp.open("GET","get_bracket_128.php?q=all", true);
+    xmlhttp.send();
+}
+
+// Given an mtgBracketWinners object, display its corresponding compression string.
+function createAndDisplayCompression(bracket_winners) {
+	if (!bracket_winners.isComplete()) {
+		document.getElementById("compressed_bracket_text").value = "You must complete the entire bracket first.";
+		return;
+	}
+	var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            let data = JSON.parse(this.responseText);
+
+            let compressed = new Array();
+            let myMap = new Map();
+
+            // Create the card-to-string map from the response.
+            for (let i = 0; i < data.length; i++) {
+				myMap.set(data[i], i);
+            }
+
+            // For each branch...
+            for (let i = 0; i < 9; i++) {
+				let branch_winners = bracket_winners.getBranchWinners(i);
+				let arr = branch_winners.getFullBranch();
+				// ...for each card...
+				for (let j = 0; j < arr.length; j++) {
+					// ...append the corresponding string to 'compressed'.
+					if (arr[j] == "") {
+						compressed.push("xxx");
+					}
+					else {
+						let result = myMap.get(arr[j]);
+						if (result == null) {
+							throw "Couldn't find that card in the map: " + arr[j];
+							//compressed.push("xxx");
+						}
+						else {
+							compressed.push(padInt(result));
+						}
+					}
+				}
+			}
+
+			let value = compressed.join("");
+			// 'compessed' now has the string to display
+			document.getElementById("compressed_bracket_text").value = value;
         }
     };
     xmlhttp.open("GET","get_bracket_128.php?q=all", true);
