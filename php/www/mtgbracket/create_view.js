@@ -221,6 +221,18 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
                 }
             }
 
+            // For the top 8, un-hide the 'continue' dialogue, because it's how we show who the winner is.
+            if (!is_building && branch_num == 8) {
+                let cont = document.getElementById("continue");
+                cont.style.display = "block";
+
+                let winning_card = document.getElementById("winning_card");
+                getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
+
+                let title_ele = document.getElementById("title_top8");
+                title_ele.style.display = "block";
+            }
+
 
             // This is the part where I try to compare the two brackets. Maybe get rid of or change this.
             if (!is_building && show_compare) {

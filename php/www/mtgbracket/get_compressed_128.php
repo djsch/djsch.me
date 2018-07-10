@@ -15,8 +15,8 @@ if (!$con) {
 }
 
 mysqli_select_db($con,"mtgbracket_dev");
-//$sql="SELECT string FROM compressed_bracket WHERE name = 'compressed_string'";
-$sql="SELECT string FROM compressed_bracket_test WHERE name = 'compressed_string'";
+$sql="SELECT string FROM compressed_bracket WHERE name = 'compressed_string'";
+//$sql="SELECT string FROM compressed_bracket_test WHERE name = 'compressed_string'";
 $result = mysqli_query($con,$sql);
 
 //$array = mysqli_fetch_row($result);
