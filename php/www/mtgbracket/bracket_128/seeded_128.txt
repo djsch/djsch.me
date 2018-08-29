@@ -69,7 +69,7 @@ Tooth and Nail
 Llanowar Elves
 Rampant Growth
 Demonic Tutor
-Deranged HErmit
+Deranged Hermit
 Liliana of the Veil
 Captain Sisay
 Mindslaver
@@ -110,7 +110,7 @@ Path to Exile
 Ensnaring Bridge
 Karn Liberated
 Oracle of Mul Daya
-Snapcaster MAge
+Snapcaster Mage
 Leyline of Sanctity
 Terminate
 Show and Tell

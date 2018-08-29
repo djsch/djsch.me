@@ -55,6 +55,10 @@ handlers:
   static_files: www/mtgbracket/mtgbracket_create_view.htm
   upload: www/mtgbracket/mtgbracket_create_view.htm
 
+- url: /mtgbracket/user_bracket_standings.htm
+  static_files: www/mtgbracket/user_bracket_standings.htm
+  upload: www/mtgbracket/user_bracket_standings.htm
+
 - url: /mtgbracket/mtg_bracket_winners.js
   static_files: www/mtgbracket/mtg_bracket_winners.js
   upload: www/mtgbracket/mtg_bracket_winners.js
@@ -66,6 +70,10 @@ handlers:
 - url: /mtgbracket/create_view.js
   static_files: www/mtgbracket/create_view.js
   upload: www/mtgbracket/create_view.js
+
+- url: /mtgbracket/user_standings.js
+  static_files: www/mtgbracket/user_standings.js
+  upload: www/mtgbracket/user_standings.js
 
 - url: /mtgbracket/images/(.*)$
   static_files: www/mtgbracket/images/\1
@@ -100,6 +108,9 @@ handlers:
 
 - url: /mtgbracket/load_bracket.php
   script: /www/mtgbracket/load_bracket.php
+
+- url: /mtgbracket/get_user_standings.php
+  script: /www/mtgbracket/get_user_standings.php
 
 - url: /mtgbracket/info.htm
   static_files: www/mtgbracket/info.htm

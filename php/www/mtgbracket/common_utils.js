@@ -8,6 +8,7 @@ function getAndSetCardImage(card_name, img) {
 	var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+            //console.log("response is: " + this.responseText);
             let data = JSON.parse(this.responseText);
             img.src = data[0];
         }

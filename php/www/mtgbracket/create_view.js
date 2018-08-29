@@ -205,7 +205,12 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
     for (let col = 0; col*2 < num_cols; col++) {
         let num_rows = rounds_and_bracket[col*2].childNodes.length;
         for (let row = 0; row < num_rows; row++) {
+            console.log("cow = " + col);
+            console.log("row = " + row);
+            console.log("left = " + cards[counter]);
+            console.log("right = " + cards[counter+1]);
             if (cards[counter] != "") {
+                console.log("left");
                 let card = cards[counter];
                 getAndSetCardImage(card, getImageFromBracket(rounds_and_bracket, col, row, 0));
                 if (is_building) {
@@ -213,6 +218,7 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
                 }
             }
             if (cards[counter+1] != "") {
+                console.log("right");
                 let card = cards[counter+1];
                 getAndSetCardImage(card, getImageFromBracket(rounds_and_bracket, col, row, 1))
                 
@@ -226,13 +232,29 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
                 let cont = document.getElementById("continue");
                 cont.style.display = "block";
 
-                let winning_card = document.getElementById("winning_card");
-                getAndSetCardImage(bracket_winners.getBranchWinners(branch_num).getWinner(), winning_card);
+                let winning_card_ele = document.getElementById("winning_card");
+                let winning_card = bracket_winners.getBranchWinners(branch_num).getWinner();
+                if (winning_card != "") {
+                    getAndSetCardImage(winning_card, winning_card_ele);
+                }
 
                 let title_ele = document.getElementById("title_top8");
                 title_ele.style.display = "block";
             }
 
+            // This is where I try to add X's for the actual bracket. Brittle.
+            if (!is_building && !show_compare) {
+                console.log("trying to show x's for actual bracket");
+                if (bracket.getCard(branch_num, col+1, row) == "") {
+                    //do nothing
+                }
+                else if (bracket.getCard(branch_num, col, row*2) != bracket.getCard(branch_num, col+1, row)) {
+                    getXFromBracket(rounds_and_bracket, col, row, 0).style.visibility = "visible";
+                }
+                else if (bracket.getCard(branch_num, col, (row*2)+1) != bracket.getCard(branch_num, col+1, row)) {
+                    getXFromBracket(rounds_and_bracket, col, row, 1).style.visibility = "visible";
+                }
+            }
 
             // This is the part where I try to compare the two brackets. Maybe get rid of or change this.
             if (!is_building && show_compare) {
@@ -515,6 +537,7 @@ function showActualResults() {
 // division is 0-8
 // 8 is top 8
 function viewActualBracket() {
+    is_create = false;
     let ele = document.getElementById("division_selector");
     let division = ele.selectedIndex;
     setViewStatus("actual");
