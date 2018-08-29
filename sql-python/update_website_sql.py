@@ -608,15 +608,15 @@ def update_top_brackets():
 	db.close()
 
 class MainPage(webapp2.RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write('Hello, World!')
-        update_sql()
-        update128()
-	 	update_top_brackets()
+	def get(self):
+		self.response.headers['Content-Type'] = 'text/plain'
+		self.response.write('Hello, World!')
+		update_sql()
+		update128()
+		update_top_brackets()
 
 app = webapp2.WSGIApplication([
-    ('/update_website_sql', MainPage),
+	('/update_website_sql', MainPage),
 ], debug=True)
 
 #print 'testing'

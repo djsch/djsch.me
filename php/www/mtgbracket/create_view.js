@@ -258,7 +258,7 @@ function showBranch(branch_num, is_building, bracket, show_compare=false) {
 
             // This is the part where I try to compare the two brackets. Maybe get rid of or change this.
             if (!is_building && show_compare) {
-                if (col > 0) { // i is the col; don't want to do this for the first column
+                if (col > 0 || branch_num == 8) { // i is the col; don't want to do this for the first column unless it's the top 8
                     if (actual_bracket_winners.getCard(branch_num, col, row*2) == "") {
                         getQuestionMarkFromBracket(rounds_and_bracket, col, row, 0).style.visibility = "visible";
                     }
