@@ -4,14 +4,14 @@ import csv
 import MySQLdb
 import json
 import re
-#import webapp2
+import webapp2
 
 import sql_info
 
 import requests
-#from requests_toolbelt.adapters import appengine
+from requests_toolbelt.adapters import appengine
 
-#appengine.monkeypatch()
+appengine.monkeypatch()
 
 from random import *
 
@@ -607,26 +607,22 @@ def update_top_brackets():
 	cursor.close()
 	db.close()
 
-def update_max_score():
-	print "test"
+class MainPage(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.write('Hello, World!')
+        update_sql()
+        update128()
+	 	update_top_brackets()
 
-#class MainPage(webapp2.RequestHandler):
-#    def get(self):
-#        self.response.headers['Content-Type'] = 'text/plain'
-#        self.response.write('Hello, World!')
-#        update_sql()
-#        update128()
-#	 	 update_top_brackets()
-#	 	 update_max_score()
-
-#app = webapp2.WSGIApplication([
-#    ('/update_website_sql', MainPage),
-#], debug=True)
+app = webapp2.WSGIApplication([
+    ('/update_website_sql', MainPage),
+], debug=True)
 
 #print 'testing'
 #update_sql()
 #update128()
-update_top_brackets()
+#update_top_brackets()
 #update_max_score()
 #update_initial_128()
 #update_last_batch()
