@@ -192,6 +192,7 @@ function getAndFillMatchups(card_name) {
     	//alert("this is what I got back" + this.responseText)
         if (this.readyState == 4 && this.status == 200) {
 
+            console.log(this.responseText);
             let data = JSON.parse(this.responseText);
             //console.log(data);
 
